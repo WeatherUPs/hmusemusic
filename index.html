@@ -6,7 +6,6 @@
     <title>HMuse — Free Music Sharing</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* Styles remain the same as your original design */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{
             --bg:#0c0c0f;--surface:#13131a;--surface2:#1a1a24;--surface3:#22222f;
@@ -15,100 +14,130 @@
             --text:#f0effe;--muted:#7a7a9a;--muted2:#4a4a6a;
         }
         body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+        button{cursor:pointer;font-family:inherit}
         .hidden{display:none!important}
+        
         #topnav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;background:rgba(12,12,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
-        .btn-accent{background:var(--accent);border:none;color:#fff;padding:7px 14px;border-radius:8px;font-weight:600;cursor:pointer}
-        .fi{width:100%;background:var(--surface2);border:1px solid var(--border);color:#fff;padding:10px;border-radius:8px;margin-top:5px}
-        .mov{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000}
-        .modal{background:var(--surface);padding:30px;border-radius:16px;width:100%;max-width:400px;border:1px solid var(--border)}
-        #toast{position:fixed;bottom:20px;right:20px;background:var(--accent);padding:12px 20px;border-radius:8px;opacity:0;transition:0.3s;pointer-events:none}
-        #toast.show{opacity:1}
-        /* ... (Include all other styles from your original code here) ... */
+        .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+        
+        .btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:7px 14px;border-radius:8px;transition:0.2s}
+        .btn-accent{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;transition:0.2s}
+        .btn-accent:hover{background:var(--accent2)}
+
+        #app{padding-top:80px;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+        
+        /* Modals */
+        .mov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
+        .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:400px;padding:28px;position:relative}
+        .fi{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:14px;padding:10px;border-radius:8px;margin-bottom:15px}
+        .fl{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase}
+        
+        #toast{position:fixed;bottom:30px;right:30px;background:var(--surface2);border:1px solid var(--border);color:#fff;padding:12px 20px;border-radius:10px;transform:translateY(100px);transition:0.3s;opacity:0}
+        #toast.show{transform:translateY(0);opacity:1}
     </style>
 </head>
 <body onload="init()">
 
 <nav id="topnav">
-    <div class="nav-logo">HMuse</div>
-    <div id="nav-right">
-        <span id="user-display" style="margin-right:10px; font-size:12px; color:var(--muted)"></span>
-        <button id="login-btn" class="btn-ghost" onclick="om('m-login')">Log In</button>
-        <button id="logout-btn" class="btn-ghost hidden" onclick="doLogout()">Log Out</button>
-        <button class="btn-accent" onclick="checkUploadAuth()">+ Upload</button>
+    <div class="nav-logo" onclick="location.reload()">HMuse</div>
+    <div id="nav-right" style="display:flex; gap:10px; align-items:center">
+        <span id="user-email" style="font-size:12px; color:var(--muted)"></span>
+        <button id="btn-login" class="btn-ghost" onclick="om('m-login')">Log In</button>
+        <button id="btn-signup" class="btn-accent" onclick="om('m-signup')">Join Free</button>
+        <button id="btn-logout" class="btn-ghost hidden" onclick="doLogout()">Log Out</button>
     </div>
 </nav>
 
-<div id="app" style="padding-top:80px; text-align:center">
-    <h1 style="font-family:'Syne'; font-size:48px">Your Music, Shared.</h1>
-    <p style="color:var(--muted)">Join the community of independent creators.</p>
+<div id="app">
+    <div id="landing" style="text-align:center; max-width:600px; padding-top:40px">
+        <h1 style="font-family:'Syne'; font-size:64px; margin-bottom:10px">HMuse</h1>
+        <p style="color:var(--muted); font-size:18px; margin-bottom:30px">Upload your music. Share it with the world. Free, forever.</p>
+        <button class="btn-accent" style="padding:15px 30px; font-size:16px" onclick="checkAuthAndUpload()">+ Upload Your First Track</button>
+    </div>
 </div>
 
 <div class="mov hidden" id="m-login">
     <div class="modal">
-        <h2>Login</h2>
-        <input class="fi" type="email" id="le" placeholder="Email">
-        <input class="fi" type="password" id="lp" placeholder="Password">
-        <button class="btn-accent" style="width:100%; margin-top:15px" onclick="doLogin()">Sign In</button>
-        <p style="font-size:12px; margin-top:10px; cursor:pointer" onclick="cm('m-login');om('m-signup')">Need an account? Sign up</p>
+        <button style="position:absolute; top:15px; right:15px; background:none; border:none; color:var(--muted)" onclick="cm('m-login')">✕</button>
+        <h2 style="margin-bottom:20px">Welcome Back</h2>
+        <label class="fl">Email</label>
+        <input class="fi" type="email" id="le" placeholder="your@email.com">
+        <label class="fl">Password</label>
+        <input class="fi" type="password" id="lp" placeholder="••••••••">
+        <button class="btn-accent" style="width:100%" onclick="doLogin()">Sign In</button>
     </div>
 </div>
 
 <div class="mov hidden" id="m-signup">
     <div class="modal">
-        <h2>Join HMuse</h2>
-        <input class="fi" type="email" id="se" placeholder="Email">
-        <input class="fi" type="password" id="sp" placeholder="Password (min 6 chars)">
-        <button class="btn-accent" style="width:100%; margin-top:15px" onclick="doSignup()">Create Account</button>
+        <button style="position:absolute; top:15px; right:15px; background:none; border:none; color:var(--muted)" onclick="cm('m-signup')">✕</button>
+        <h2 style="margin-bottom:20px">Create Account</h2>
+        <label class="fl">Email</label>
+        <input class="fi" type="email" id="se" placeholder="your@email.com">
+        <label class="fl">Password</label>
+        <input class="fi" type="password" id="sp" placeholder="Min 6 characters">
+        <button class="btn-accent" style="width:100%" onclick="doSignup()">Join HMuse</button>
     </div>
 </div>
 
 <div class="mov hidden" id="m-upload">
     <div class="modal">
-        <h2>Upload Track</h2>
-        <div class="fg"><label>Audio File</label><input type="file" id="af" accept="audio/*" class="fi"></div>
-        <div class="fg"><label>Title</label><input type="text" id="utitle" class="fi" placeholder="Track Name"></div>
-        <div id="uprog" class="hidden" style="color:var(--accent); font-size:12px; margin-top:10px">Uploading...</div>
-        <button id="ubtn" class="btn-accent" style="width:100%; margin-top:15px" onclick="doUpload()">Submit Track</button>
-        <button class="btn-ghost" style="width:100%; margin-top:10px" onclick="cm('m-upload')">Cancel</button>
+        <button style="position:absolute; top:15px; right:15px; background:none; border:none; color:var(--muted)" onclick="cm('m-upload')">✕</button>
+        <h2 style="margin-bottom:10px">Upload Track</h2>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:20px">Files are reviewed before going live.</p>
+        
+        <label class="fl">Audio File (MP3)</label>
+        <input class="fi" type="file" id="af" accept="audio/mpeg">
+        
+        <label class="fl">Track Title</label>
+        <input class="fi" type="text" id="utitle" placeholder="What's the name of this track?">
+        
+        <div id="upload-status" style="font-size:12px; color:var(--accent); margin-bottom:10px" class="hidden">Uploading...</div>
+        <button id="ubtn" class="btn-accent" style="width:100%" onclick="doUpload()">Submit for Review</button>
     </div>
 </div>
 
-<div id="toast">Successfully updated!</div>
+<div id="toast">Message here</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+    // --- SUPABASE CONFIG ---
     const SB_URL = 'https://veuvkutbzhbwwlkoxwaz.supabase.co';
-    const SB_KEY = 'sb_publishable_oKnlJ85a4RJyMdQbuknhQg_Ha6Au53F'; // Ensure this is your Project API Key
+    const SB_KEY = 'sb_publishable_oKnlJ85a4RJyMdQbuknhQg_Ha6Au53F'; 
     const sb = supabase.createClient(SB_URL, SB_KEY);
 
     let CU = null;
 
     async function init() {
         const { data: { session } } = await sb.auth.getSession();
-        updateUserUI(session?.user || null);
+        handleAuthState(session?.user || null);
     }
 
-    function updateUserUI(user) {
+    function handleAuthState(user) {
         CU = user;
         if (user) {
-            document.getElementById('login-btn').classList.add('hidden');
-            document.getElementById('logout-btn').classList.remove('hidden');
-            document.getElementById('user-display').textContent = user.email;
+            document.getElementById('btn-login').classList.add('hidden');
+            document.getElementById('btn-signup').classList.add('hidden');
+            document.getElementById('btn-logout').classList.remove('hidden');
+            document.getElementById('user-email').textContent = user.email;
         } else {
-            document.getElementById('login-btn').classList.remove('hidden');
-            document.getElementById('logout-btn').classList.add('hidden');
-            document.getElementById('user-display').textContent = '';
+            document.getElementById('btn-login').classList.remove('hidden');
+            document.getElementById('btn-signup').classList.remove('hidden');
+            document.getElementById('btn-logout').classList.add('hidden');
+            document.getElementById('user-email').textContent = '';
         }
     }
 
+    // --- AUTH ACTIONS ---
     async function doLogin() {
         const email = document.getElementById('le').value;
         const password = document.getElementById('lp').value;
         const { data, error } = await sb.auth.signInWithPassword({ email, password });
         if (error) alert(error.message);
         else {
-            updateUserUI(data.user);
+            handleAuthState(data.user);
             cm('m-login');
+            showToast("Logged in successfully!");
         }
     }
 
@@ -117,38 +146,48 @@
         const password = document.getElementById('sp').value;
         const { data, error } = await sb.auth.signUp({ email, password });
         if (error) alert(error.message);
-        else alert("Check your email for confirmation!");
+        else {
+            alert("Success! Check your email to confirm your account.");
+            cm('m-signup');
+        }
     }
 
     async function doLogout() {
         await sb.auth.signOut();
-        updateUserUI(null);
+        handleAuthState(null);
+        showToast("Logged out.");
     }
 
-    function checkUploadAuth() {
+    // --- UPLOAD LOGIC ---
+    function checkAuthAndUpload() {
         if (!CU) om('m-login');
         else om('m-upload');
     }
 
     async function doUpload() {
         const file = document.getElementById('af').files[0];
-        const title = document.getElementById('utitle').value;
+        const title = document.getElementById('utitle').value.trim();
         
-        if (!file || !title) return alert("Please fill all fields");
+        if (!file || !title) return alert("Please provide both a file and a title.");
+        if (!CU) return alert("Session expired. Please log in again.");
 
-        document.getElementById('ubtn').disabled = true;
-        document.getElementById('uprog').classList.remove('hidden');
+        const ubtn = document.getElementById('ubtn');
+        const ustat = document.getElementById('upload-status');
+
+        ubtn.disabled = true;
+        ustat.classList.remove('hidden');
 
         try {
-            // 1. Upload file to Storage
-            const fileName = `${Date.now()}-${file.name}`;
-            const { data: uploadData, error: uploadError } = await sb.storage
+            // 1. Storage Upload
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}.${fileExt}`;
+            const { error: storageError } = await sb.storage
                 .from('music')
                 .upload(fileName, file);
 
-            if (uploadError) throw uploadError;
+            if (storageError) throw storageError;
 
-            // 2. Insert into Database
+            // 2. Database Insert (The user_id is handled by the SQL default)
             const { error: dbError } = await sb.from('tracks').insert([{
                 title: title,
                 audio_url: fileName,
@@ -158,18 +197,28 @@
 
             if (dbError) throw dbError;
 
-            alert("Upload Success! Admin will review it.");
-            cm('m-upload');
-        } catch (e) {
-            alert(e.message);
+            showToast("Track submitted! Refreshing...");
+            setTimeout(() => location.reload(), 2000);
+
+        } catch (err) {
+            alert("Error: " + err.message);
+            console.error(err);
         } finally {
-            document.getElementById('ubtn').disabled = false;
-            document.getElementById('uprog').classList.add('hidden');
+            ubtn.disabled = false;
+            ustat.classList.add('hidden');
         }
     }
 
+    // --- UI HELPERS ---
     function om(id) { document.getElementById(id).classList.remove('hidden'); }
     function cm(id) { document.getElementById(id).classList.add('hidden'); }
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
 </script>
+
 </body>
 </html>
