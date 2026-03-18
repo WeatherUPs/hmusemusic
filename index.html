@@ -1,93 +1,1012 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>HMuse — First Iteration</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { background: #0c0c0f; color: white; font-family: sans-serif; padding: 50px; text-align: center; }
-        .card { background: #13131a; padding: 20px; border-radius: 10px; border: 1px solid #2a2a3a; display: inline-block; }
-        input { display: block; width: 100%; margin: 10px 0; padding: 10px; background: #1a1a24; border: 1px solid #2a2a3a; color: white; border-radius: 5px; }
-        button { background: #7c5cfc; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .hidden { display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HMuse — Free Music Sharing</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0c0f;--surface:#13131a;--surface2:#1a1a24;--surface3:#22222f;
+  --border:#2a2a3a;--accent:#7c5cfc;--accent2:#a855f7;--accent-dim:#3d2e7a;
+  --green:#22c55e;--red:#ef4444;--amber:#f59e0b;
+  --text:#f0effe;--muted:#7a7a9a;--muted2:#4a4a6a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+input,textarea,select{font-family:inherit}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent-dim);border-radius:3px}
+.hidden{display:none!important}
+.page{display:none}.page.active{display:block}
+
+#topnav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;background:rgba(12,12,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;flex-shrink:0}
+#sb-status{font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:background 0.3s}
+.sb-dot.ok{background:var(--green)}.sb-dot.err{background:var(--red)}
+#nav-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:7px 14px;border-radius:8px;transition:all 0.2s}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-accent{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;transition:all 0.2s}
+.btn-accent:hover{background:var(--accent2)}
+
+#app{padding-top:60px;min-height:100vh}
+.layout{display:flex;min-height:calc(100vh - 60px)}
+#sidebar{width:200px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:16px 8px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.sl-label{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted2);padding:0 10px;margin:16px 0 6px}
+.sl-link{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:13px;color:var(--muted);transition:all 0.15s;cursor:pointer;user-select:none}
+.sl-link:hover{background:var(--surface2);color:var(--text)}
+.sl-link.active{background:var(--accent-dim);color:var(--accent)}
+#main{flex:1;min-width:0}
+
+#landing{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(124,92,252,0.1) 0%,transparent 70%)}
+#landing h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(52px,10vw,96px);background:linear-gradient(135deg,#fff 20%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;line-height:1;margin-bottom:14px}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:600px;width:100%;margin-bottom:32px}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.feat-icon{font-size:22px;margin-bottom:6px}
+.feat-card h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px}
+.feat-card p{font-size:11px;color:var(--muted)}
+
+.content{padding:24px 24px 100px}
+.sec-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.sec-badge{font-size:11px;font-weight:400;color:var(--muted);background:var(--surface2);padding:3px 9px;border-radius:20px}
+
+.hero-band{padding:44px 24px 32px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,92,252,0.1) 0%,transparent 70%);border-bottom:1px solid var(--border);text-align:center}
+.hero-band h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,5vw,48px);margin-bottom:8px}
+.hero-band p{color:var(--muted);max-width:380px;margin:0 auto 20px;font-size:14px}
+
+.music-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:16px;margin-bottom:32px}
+.track-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.2s}
+.track-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,92,252,0.12)}
+.tc-cover{width:100%;aspect-ratio:1;background:linear-gradient(135deg,var(--surface2),var(--surface3));display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;overflow:hidden;cursor:pointer}
+.tc-cover img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.play-ov{position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;font-size:30px}
+.track-card:hover .play-ov{opacity:1}
+.tc-info{padding:11px}
+.tc-title{font-weight:600;font-size:13px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc-artist{font-size:11px;color:var(--muted);margin-bottom:6px}
+.tc-meta{display:flex;justify-content:space-between;align-items:center}
+.tc-license{font-size:10px;background:var(--surface3);padding:2px 6px;border-radius:4px;color:var(--muted)}
+.tc-plays{font-size:10px;color:var(--muted2)}
+.tc-acts{display:flex;gap:4px;padding:0 11px 11px}
+.tca{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px;border-radius:6px;transition:all 0.15s;cursor:pointer}
+.tca:hover{border-color:var(--accent);color:var(--accent)}
+.tca.liked{color:var(--red);border-color:var(--red)}
+.st-pending{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.3);margin-bottom:5px}
+.st-approved{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
+.st-rejected{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+
+#player{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(10,10,14,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);height:68px;display:flex;align-items:center;padding:0 18px;gap:14px}
+.pcov{width:40px;height:40px;border-radius:7px;background:var(--surface3);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:16px}
+.pcov img{width:100%;height:100%;object-fit:cover}
+.pinfo{min-width:100px;flex-shrink:0}
+.ptitle{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.partist{font-size:10px;color:var(--muted)}
+.pcontrols{display:flex;align-items:center;gap:8px;flex:1;max-width:460px}
+.cbtn{background:none;border:none;color:var(--muted);font-size:15px;padding:3px;transition:color 0.15s;cursor:pointer}
+.cbtn:hover{color:var(--text)}
+.cbtn.play{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center}
+.cbtn.play:hover{background:var(--accent2)}
+.prog-wrap{flex:1;display:flex;align-items:center;gap:6px}
+.prog-bar{flex:1;height:4px;background:var(--surface3);border-radius:2px;cursor:pointer;position:relative}
+.prog-fill{height:100%;background:var(--accent);border-radius:2px;pointer-events:none}
+.tlabel{font-size:10px;color:var(--muted);min-width:28px;font-variant-numeric:tabular-nums}
+.pright{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.vol-sl{width:64px;accent-color:var(--accent)}
+.pshar{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px 9px;border-radius:6px;cursor:pointer;transition:all 0.2s}
+.pshar:hover{border-color:var(--accent);color:var(--accent)}
+
+.mov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:460px;padding:28px;max-height:92vh;overflow-y:auto;position:relative}
+.modal h2{font-family:'Syne',sans-serif;font-weight:700;font-size:19px;margin-bottom:5px}
+.msub{color:var(--muted);font-size:13px;margin-bottom:22px}
+.fg{margin-bottom:15px}
+.fl{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:0.05em;text-transform:uppercase}
+.fi{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:14px;padding:9px 12px;border-radius:8px;transition:border-color 0.2s}
+.fi:focus{outline:none;border-color:var(--accent)}
+.fi::placeholder{color:var(--muted2)}
+textarea.fi{resize:vertical;min-height:64px}
+.ferr{font-size:12px;color:var(--red);margin-top:4px;display:none}
+.ferr.show{display:block}
+.bfull{width:100%;padding:11px;font-size:14px;font-weight:600;border-radius:10px;border:none;background:var(--accent);color:#fff;transition:all 0.2s;margin-top:4px;cursor:pointer}
+.bfull:hover{background:var(--accent2)}
+.bfull:disabled{opacity:0.5;cursor:not-allowed}
+.mclose{position:absolute;top:12px;right:12px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:7px;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mclose:hover{color:var(--text)}
+
+.uz{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:4px}
+.uz:hover,.uz.drag{border-color:var(--accent);background:rgba(124,92,252,0.05)}
+.uz-icon{font-size:26px;margin-bottom:6px}
+.uz p{font-size:12px;color:var(--muted)}
+.ufn{font-size:11px;color:var(--green);margin-top:4px}
+
+.tabs{display:flex;gap:3px;background:var(--surface2);padding:3px;border-radius:10px;margin-bottom:20px}
+.tab{flex:1;text-align:center;padding:7px;border-radius:7px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.15s}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.3)}
+.atbl{width:100%;border-collapse:collapse}
+.atbl th{text-align:left;font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted2);padding:7px 10px;border-bottom:1px solid var(--border)}
+.atbl td{padding:10px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
+.atbl tr:last-child td{border:none}
+.atbl tr:hover td{background:var(--surface2)}
+.aacts{display:flex;gap:5px;flex-wrap:wrap}
+.abtn{font-size:11px;padding:4px 9px;border-radius:6px;cursor:pointer;transition:all 0.15s;border:1px solid}
+.abtn.ok{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3);color:var(--green)}
+.abtn.ok:hover{background:rgba(34,197,94,0.25)}
+.abtn.no{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3);color:var(--red)}
+.abtn.no:hover{background:rgba(239,68,68,0.25)}
+
+.slink{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--muted);margin-bottom:12px;word-break:break-all}
+.sbtns{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.sbtn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:12px;padding:9px;border-radius:8px;transition:all 0.15s;display:flex;align-items:center;gap:6px;justify-content:center;cursor:pointer}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+
+.prof-hdr{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:18px}
+.ava{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:#fff;flex-shrink:0}
+.pstats{display:flex;gap:18px;margin-top:8px}
+.snum{font-family:'Syne',sans-serif;font-weight:700;font-size:17px}
+.slbl{font-size:10px;color:var(--muted)}
+
+.loader{display:flex;align-items:center;justify-content:center;padding:50px;color:var(--muted);font-size:13px;gap:10px}
+.spin{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.empty{text-align:center;padding:44px 16px;color:var(--muted)}
+.empty-ic{font-size:40px;margin-bottom:8px}
+.empty h3{font-family:'Syne',sans-serif;font-size:15px;color:var(--text);margin-bottom:5px}
+
+.pnotice{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--amber);margin-bottom:16px}
+
+.uprog{background:var(--surface2);border-radius:4px;height:5px;overflow:hidden;margin-bottom:8px}
+.uprog-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.3s}
+
+#toast{position:fixed;bottom:80px;right:16px;z-index:900;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,0.4);transform:translateY(14px);opacity:0;transition:all 0.3s;pointer-events:none;display:flex;align-items:center;gap:8px}
+#toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:680px){
+  #sidebar{display:none}
+  .feat-grid{grid-template-columns:1fr}
+  .music-grid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr))}
+  .content{padding:14px 12px 100px}
+  #player{gap:6px;padding:0 10px}
+  .pright{display:none}
+}
+</style>
 </head>
 <body>
 
+<nav id="topnav">
+  <div class="nav-logo" onclick="goLanding()">HMuse</div>
+  <div id="sb-status"><div class="sb-dot" id="sb-dot"></div><span id="sb-txt">Connecting...</span></div>
+  <div id="nav-right">
+    <button class="btn-ghost" onclick="openLogin()">Log in</button>
+    <button class="btn-accent" onclick="openSignup()">Join Free</button>
+  </div>
+</nav>
+
+<div id="app">
+
+  <!-- LANDING -->
+  <div id="landing">
     <h1>HMuse</h1>
-    
-    <div id="auth-section">
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="pass" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <button onclick="signup()">Signup</button>
+    <p style="font-size:17px;color:var(--muted);text-align:center;max-width:400px;margin:0 auto 32px">Upload your music. Share it with the world. Free, forever.</p>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="feat-icon">🎵</div><h3>Upload & Share</h3><p>Your music, your terms.</p></div>
+      <div class="feat-card"><div class="feat-icon">🎧</div><h3>Listen Free</h3><p>Stream any approved track.</p></div>
+      <div class="feat-card"><div class="feat-icon">🛡️</div><h3>Admin Approved</h3><p>Every upload reviewed first.</p></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <button class="btn-accent" style="font-size:15px;padding:12px 26px;border-radius:10px" onclick="openSignup()">Get Started Free</button>
+      <button class="btn-ghost" style="font-size:15px;padding:12px 26px;border-radius:10px" onclick="goDiscover()">Browse Music</button>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div id="main-layout" style="display:none" class="layout">
+    <div id="sidebar">
+      <div class="sl-label" style="margin-top:4px">Explore</div>
+      <div class="sl-link active" id="sl-discover" onclick="goDiscover()">🔥 Discover</div>
+      <div class="sl-link" id="sl-recent" onclick="goRecent()">🕐 Recent</div>
+      <div id="sb-auth" style="display:none">
+        <div class="sl-label">Your Music</div>
+        <div class="sl-link" id="sl-library" onclick="goLibrary()">💜 Library</div>
+        <div class="sl-link" id="sl-uploads" onclick="goUploads()">⬆️ My Uploads</div>
+        <div class="sl-link" id="sl-profile" onclick="goProfile()">👤 Profile</div>
+      </div>
+      <div id="sb-admin" style="display:none">
+        <div class="sl-label">Admin</div>
+        <div class="sl-link" id="sl-admin" onclick="goAdmin()">⚙️ Admin Panel</div>
+      </div>
+      <div class="sl-label">Info</div>
+      <div class="sl-link" id="sl-legal" onclick="goLegal()">📄 Terms & DMCA</div>
     </div>
 
-    <div id="upload-section" class="hidden">
-        <div class="card">
-            <h3>Upload Track</h3>
-            <input type="file" id="audio-file" accept="audio/mpeg">
-            <input type="text" id="title" placeholder="Track Title">
-            <button id="up-btn" onclick="upload()">Submit Track</button>
+    <div id="main">
+
+      <!-- DISCOVER -->
+      <div id="page-discover" class="page active">
+        <div class="hero-band">
+          <h1>Discover Music</h1>
+          <p>Free tracks from independent artists, approved and ready to play.</p>
+          <div id="hcta-out" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button class="btn-accent" onclick="openSignup()">Upload Your Music</button>
+            <button class="btn-ghost" onclick="openLogin()">Sign In</button>
+          </div>
+          <div id="hcta-in" style="display:none">
+            <button class="btn-accent" onclick="openUpload()">+ Upload Track</button>
+          </div>
         </div>
+        <div class="content">
+          <div class="sec-title">All Tracks <span class="sec-badge" id="track-count">loading...</span></div>
+          <div id="disc-loader" class="loader"><div class="spin"></div>Loading...</div>
+          <div class="music-grid" id="disc-grid" style="display:none"></div>
+          <div class="empty hidden" id="disc-empty"><div class="empty-ic">🎵</div><h3>No approved tracks yet</h3><p>Be the first to upload!</p></div>
+        </div>
+      </div>
+
+      <!-- RECENT -->
+      <div id="page-recent" class="page">
+        <div class="content">
+          <div class="sec-title">Recently Added</div>
+          <div class="music-grid" id="rec-grid"></div>
+          <div class="empty hidden" id="rec-empty"><div class="empty-ic">🕐</div><h3>Nothing recent yet</h3></div>
+        </div>
+      </div>
+
+      <!-- LIBRARY -->
+      <div id="page-library" class="page">
+        <div class="content">
+          <div class="sec-title">My Liked Tracks</div>
+          <div class="music-grid" id="lib-grid"></div>
+          <div class="empty hidden" id="lib-empty"><div class="empty-ic">💜</div><h3>No liked tracks yet</h3><p>Heart tracks you love.</p></div>
+        </div>
+      </div>
+
+      <!-- UPLOADS -->
+      <div id="page-uploads" class="page">
+        <div class="content">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <div class="sec-title" style="margin:0">My Uploads</div>
+            <button class="btn-accent" onclick="openUpload()">+ Upload Track</button>
+          </div>
+          <div class="pnotice">⏳ Uploads are reviewed by admin before going live.</div>
+          <div class="music-grid" id="upl-grid"></div>
+          <div class="empty hidden" id="upl-empty"><div class="empty-ic">⬆️</div><h3>No uploads yet</h3><br><button class="btn-accent" onclick="openUpload()">Upload Your First Track</button></div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div id="page-profile" class="page">
+        <div class="content">
+          <div class="prof-hdr" id="prof-hdr"></div>
+          <div class="sec-title">Your Live Tracks</div>
+          <div class="music-grid" id="prof-grid"></div>
+        </div>
+      </div>
+
+      <!-- ADMIN -->
+      <div id="page-admin" class="page">
+        <div class="content">
+          <div class="sec-title">Admin Panel <span class="sec-badge">henwenskeeper</span></div>
+          <div class="tabs">
+            <div class="tab active" onclick="aTab('pending')">⏳ Pending</div>
+            <div class="tab" onclick="aTab('approved')">✅ Approved</div>
+            <div class="tab" onclick="aTab('rejected')">❌ Rejected</div>
+            <div class="tab" onclick="aTab('users')">👥 Users</div>
+          </div>
+          <div id="atab-pending">
+            <div id="ap-loader" class="loader"><div class="spin"></div>Loading...</div>
+            <table class="atbl" id="ap-tbl" style="display:none"><thead><tr><th>Track</th><th>Artist</th><th>License</th><th>Date</th><th>Actions</th></tr></thead><tbody id="ap-body"></tbody></table>
+            <div class="empty hidden" id="ap-empty"><div class="empty-ic">✅</div><h3>Nothing pending</h3></div>
+          </div>
+          <div id="atab-approved" style="display:none"><table class="atbl"><thead><tr><th>Track</th><th>Artist</th><th>License</th><th>Actions</th></tr></thead><tbody id="aa-body"></tbody></table></div>
+          <div id="atab-rejected" style="display:none"><table class="atbl"><thead><tr><th>Track</th><th>Artist</th><th>Date</th><th>Actions</th></tr></thead><tbody id="ar-body"></tbody></table></div>
+          <div id="atab-users" style="display:none"><table class="atbl"><thead><tr><th>Username</th><th>Email</th><th>Joined</th><th>Uploads</th></tr></thead><tbody id="au-body"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- LEGAL -->
+      <div id="page-legal" class="page">
+        <div class="content" style="max-width:660px">
+          <div class="sec-title">Legal & Policies</div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:14px">
+            <h3 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;color:var(--accent)">Terms & Conditions</h3>
+            <p style="color:var(--muted);line-height:1.8;font-size:13px">By uploading to HMuse, you confirm you own 100% of the rights to your music. You grant HMuse a non-exclusive licence to stream your track to users. You may not upload covers, samples, or content you do not own. All uploads are subject to admin approval before going live.</p>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:14px">
+            <h3 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;color:var(--accent)">DMCA Safe Harbour</h3>
+            <p style="color:var(--muted);line-height:1.8;font-size:13px">HMuse complies with the Digital Millennium Copyright Act. To file a takedown notice provide: (1) identification of the copyrighted work, (2) the infringing URL, (3) your contact details, (4) a statement of good faith belief. We will remove infringing content within 48 hours.</p>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px">
+            <h3 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;color:var(--accent)">Privacy Policy</h3>
+            <p style="color:var(--muted);line-height:1.8;font-size:13px">We collect only what is necessary: your username, email, and upload metadata, stored securely in Supabase. We do not sell your data. You own your music. You own your data.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
+</div>
 
-    <script>
-        const SB_URL = 'https://veuvkutbzhbwwlkoxwaz.supabase.co';
-        const SB_KEY = 'sb_publishable_oKnlJ85a4RJyMdQbuknhQg_Ha6Au53F';
-        const sb = supabase.createClient(SB_URL, SB_KEY);
+<!-- PLAYER -->
+<div id="player" class="hidden">
+  <div class="pcov" id="pcov">🎵</div>
+  <div class="pinfo"><div class="ptitle" id="ptitle">—</div><div class="partist" id="partist">—</div></div>
+  <div class="pcontrols">
+    <button class="cbtn" onclick="prevTrack()">⏮</button>
+    <button class="cbtn play" id="pbtn" onclick="togglePlay()">▶</button>
+    <button class="cbtn" onclick="nextTrack()">⏭</button>
+    <div class="prog-wrap">
+      <span class="tlabel" id="tcur">0:00</span>
+      <div class="prog-bar" id="progbar" onclick="seekTrack(event)"><div class="prog-fill" id="progfill" style="width:0%"></div></div>
+      <span class="tlabel" id="tdur">0:00</span>
+    </div>
+  </div>
+  <div class="pright">
+    <span style="font-size:12px;color:var(--muted)">🔊</span>
+    <input type="range" class="vol-sl" min="0" max="1" step="0.05" value="1" oninput="setVol(this.value)">
+    <button class="pshar" onclick="openShareCur()">↗ Share</button>
+  </div>
+</div>
 
-        let user = null;
+<!-- LOGIN -->
+<div class="mov hidden" id="m-login">
+  <div class="modal">
+    <button class="mclose" onclick="cm('m-login')">✕</button>
+    <h2>Welcome back</h2><p class="msub">Sign in to your HMuse account</p>
+    <div class="fg"><label class="fl">Username</label><input class="fi" id="lu" placeholder="username" autocomplete="username"></div>
+    <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="ferr" id="lerr">Invalid username or password.</div>
+    <button class="bfull" id="lbtn" onclick="doLogin()">Sign In</button>
+    <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">No account? <a style="color:var(--accent);cursor:pointer" onclick="cm('m-login');openSignup()">Join free</a></p>
+  </div>
+</div>
 
-        async function signup() {
-            const { error } = await sb.auth.signUp({
-                email: document.getElementById('email').value,
-                password: document.getElementById('pass').value
-            });
-            if (error) alert(error.message); else alert("Check email!");
-        }
+<!-- SIGNUP -->
+<div class="mov hidden" id="m-signup">
+  <div class="modal">
+    <button class="mclose" onclick="cm('m-signup')">✕</button>
+    <h2>Join HMuse</h2><p class="msub">Free forever. Upload music. Share with the world.</p>
+    <div class="fg"><label class="fl">Username</label><input class="fi" id="su" placeholder="choose a username"></div>
+    <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="se" placeholder="your@email.com"></div>
+    <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="sp" placeholder="min 6 characters" onkeydown="if(event.key==='Enter')doSignup()"></div>
+    <div class="ferr" id="serr"></div>
+    <button class="bfull" id="sbtn" onclick="doSignup()">Create Account</button>
+    <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">Have an account? <a style="color:var(--accent);cursor:pointer" onclick="cm('m-signup');openLogin()">Sign in</a></p>
+  </div>
+</div>
 
-        async function login() {
-            const { data, error } = await sb.auth.signInWithPassword({
-                email: document.getElementById('email').value,
-                password: document.getElementById('pass').value
-            });
-            if (error) alert(error.message);
-            else {
-                user = data.user;
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('upload-section').classList.remove('hidden');
-            }
-        }
+<!-- UPLOAD -->
+<div class="mov hidden" id="m-upload">
+  <div class="modal" style="max-width:500px">
+    <button class="mclose" onclick="cm('m-upload')">✕</button>
+    <h2>Upload Track</h2><p class="msub">Reviewed by admin before going live. Original music only.</p>
+    <div class="fg">
+      <label class="fl">Track File (MP3/WAV/OGG — max 20MB)</label>
+      <div class="uz" id="uz-audio" onclick="document.getElementById('af').click()" ondrop="dropAudio(event)" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')">
+        <div class="uz-icon">🎵</div><p><strong style="color:var(--accent)">Click to upload</strong> or drag & drop</p>
+        <div class="ufn" id="afn"></div>
+      </div>
+      <input type="file" id="af" accept="audio/*" style="display:none" onchange="handleAF(this)">
+    </div>
+    <div class="fg">
+      <label class="fl">Cover Art (optional)</label>
+      <div class="uz" style="padding:12px;display:flex;align-items:center;gap:12px" onclick="document.getElementById('cf').click()">
+        <div id="cprev" style="width:40px;height:40px;border-radius:8px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden">🖼️</div>
+        <p style="font-size:12px;color:var(--muted)"><strong style="color:var(--accent)">Click</strong> to upload cover<div class="ufn" id="cfn"></div></p>
+      </div>
+      <input type="file" id="cf" accept="image/*" style="display:none" onchange="handleCF(this)">
+    </div>
+    <div class="fg"><label class="fl">Track Title *</label><input class="fi" id="utitle" placeholder="Name your track"></div>
+    <div class="fg"><label class="fl">Genre (optional)</label><input class="fi" id="ugenre" placeholder="e.g. Hip-Hop, Lo-fi, Pop"></div>
+    <div class="fg">
+      <label class="fl">License *</label>
+      <select class="fi" id="ulicense">
+        <option value="All Rights Reserved">All Rights Reserved</option>
+        <option value="CC BY">CC BY — credit required</option>
+        <option value="CC BY-SA">CC BY-SA</option>
+        <option value="CC BY-NC">CC BY-NC — no commercial use</option>
+        <option value="CC0">CC0 / Public Domain</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Description (optional)</label><textarea class="fi" id="udesc" placeholder="Tell people about your track..."></textarea></div>
+    <div class="ferr" id="uerr"></div>
+    <div id="uprog-wrap" style="display:none;margin-bottom:10px">
+      <div class="uprog"><div class="uprog-fill" id="uprog-fill" style="width:0%"></div></div>
+      <p style="font-size:11px;color:var(--muted)" id="uprog-txt">Uploading...</p>
+    </div>
+    <button class="bfull" id="ubtn" onclick="doUpload()">Submit for Review</button>
+  </div>
+</div>
 
-        async function upload() {
-            const file = document.getElementById('audio-file').files[0];
-            const title = document.getElementById('title').value;
-            if(!file || !title) return alert("Fill everything!");
+<!-- SHARE -->
+<div class="mov hidden" id="m-share">
+  <div class="modal" style="max-width:370px">
+    <button class="mclose" onclick="cm('m-share')">✕</button>
+    <h2>Share</h2><p class="msub" id="sh-name"></p>
+    <div class="slink" id="sh-link"></div>
+    <div class="sbtns">
+      <button class="sbtn" onclick="copyLink()">📋 Copy Link</button>
+      <button class="sbtn" onclick="shareTw()">🐦 Twitter / X</button>
+      <button class="sbtn" onclick="shareWa()">💬 WhatsApp</button>
+      <button class="sbtn" onclick="shareFb()">📘 Facebook</button>
+    </div>
+  </div>
+</div>
 
-            document.getElementById('up-btn').innerText = "Uploading...";
+<div id="toast"><span id="t-ic">✅</span><span id="t-msg"></span></div>
 
-            try {
-                // 1. Upload file to Storage
-                const fileName = Date.now() + "_" + file.name;
-                const { error: sErr } = await sb.storage.from('music').upload(fileName, file);
-                if (sErr) throw sErr;
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// =====================================================
+// SUPABASE CONFIG
+// =====================================================
+const SB_URL  = 'https://veuvkutbzhbwwlkoxwaz.supabase.co';
+const SB_KEY  = 'sb_publishable_oKnlJ85a4RJyMdQbuknhQg_Ha6Au53F';
+const sb      = supabase.createClient(SB_URL, SB_KEY);
 
-                // 2. Insert to DB (The SQL 'DEFAULT auth.uid()' handles the user_id for us)
-                const { error: dErr } = await sb.from('tracks').insert([{
-                    title: title,
-                    audio_url: fileName,
-                    artist: user.email.split('@')[0],
-                    status: 'pending'
-                }]);
-                if (dErr) throw dErr;
+const ADMIN_U = 'henwenskeeper';
+const ADMIN_P = '12241224';
 
-                alert("Success!");
-                location.reload();
-            } catch (e) {
-                alert(e.message);
-            }
-        }
-    </script>
+// =====================================================
+// STATE
+// =====================================================
+let CU = null; // {username, role}
+let uploadAF = null, uploadCover = null;
+let shareTrk = null;
+let queue = [], qi = -1;
+const audio = new Audio();
+
+try { const s = sessionStorage.getItem('hm_sess'); if(s) CU = JSON.parse(s); } catch(e) {}
+
+// =====================================================
+// INIT
+// =====================================================
+async function init() {
+  // Test connection
+  try {
+    const { error } = await sb.from('tracks').select('id').limit(1);
+    if(error) throw error;
+    sbOK('Connected ✓');
+  } catch(e) {
+    sbERR('DB error: ' + e.message);
+  }
+
+  if(CU) applyLoggedIn();
+  goDiscover();
+
+  const tp = new URLSearchParams(location.search).get('track');
+  if(tp) setTimeout(() => playTrackById(tp), 600);
+}
+
+function sbOK(msg) { document.getElementById('sb-dot').className='sb-dot ok'; document.getElementById('sb-txt').textContent=msg; }
+function sbERR(msg) { document.getElementById('sb-dot').className='sb-dot err'; document.getElementById('sb-txt').textContent=msg; }
+
+// =====================================================
+// AUTH
+// =====================================================
+function openLogin() {
+  document.getElementById('lu').value='';
+  document.getElementById('lp').value='';
+  document.getElementById('lerr').classList.remove('show');
+  om('m-login');
+}
+function openSignup() {
+  document.getElementById('serr').classList.remove('show');
+  om('m-signup');
+}
+
+async function doLogin() {
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value;
+  document.getElementById('lerr').classList.remove('show');
+  document.getElementById('lbtn').disabled = true;
+
+  // Admin
+  if(u === ADMIN_U && p === ADMIN_P) {
+    CU = {username: ADMIN_U, role: 'admin'};
+    sessionStorage.setItem('hm_sess', JSON.stringify(CU));
+    cm('m-login'); applyLoggedIn();
+    toast('✅', 'Welcome back, Admin!');
+    goAdmin(); document.getElementById('lbtn').disabled = false; return;
+  }
+
+  const { data, error } = await sb.from('users').select('*').eq('username', u).eq('password_hash', sh(p)).single();
+  document.getElementById('lbtn').disabled = false;
+  if(error || !data) { document.getElementById('lerr').classList.add('show'); return; }
+
+  CU = {username: data.username, role: 'user'};
+  sessionStorage.setItem('hm_sess', JSON.stringify(CU));
+  cm('m-login'); applyLoggedIn();
+  toast('✅', 'Welcome back, ' + data.username + '!');
+  goDiscover();
+}
+
+async function doSignup() {
+  const u = document.getElementById('su').value.trim();
+  const e = document.getElementById('se').value.trim();
+  const p = document.getElementById('sp').value;
+  const errEl = document.getElementById('serr');
+  errEl.classList.remove('show');
+  document.getElementById('sbtn').disabled = true;
+
+  if(!u||!e||!p) { errEl.textContent='Please fill all fields.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
+  if(u.length<3) { errEl.textContent='Username must be at least 3 characters.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
+  if(p.length<6) { errEl.textContent='Password must be at least 6 characters.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
+  if(u===ADMIN_U) { errEl.textContent='That username is reserved.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
+
+  const { error } = await sb.from('users').insert({ username:u, email:e, password_hash:sh(p), joined:Date.now() });
+  document.getElementById('sbtn').disabled = false;
+  if(error) {
+    if(error.message.includes('unique')) errEl.textContent = 'Username or email already taken.';
+    else errEl.textContent = 'Error: ' + error.message;
+    errEl.classList.add('show'); return;
+  }
+
+  CU = {username: u, role: 'user'};
+  sessionStorage.setItem('hm_sess', JSON.stringify(CU));
+  cm('m-signup'); applyLoggedIn();
+  toast('🎉', 'Welcome to HMuse, ' + u + '!');
+  goDiscover();
+}
+
+function doLogout() {
+  CU = null; sessionStorage.removeItem('hm_sess');
+  applyLoggedOut(); goLanding();
+  toast('👋', 'Signed out');
+}
+
+function applyLoggedIn() {
+  document.getElementById('nav-right').innerHTML = `
+    <span style="font-size:13px;color:var(--muted)">👋 ${esc(CU.username)}</span>
+    ${CU.role==='admin'?'<button class="btn-ghost" onclick="goAdmin()">⚙️ Admin</button>':''}
+    <button class="btn-ghost" onclick="openUpload()">+ Upload</button>
+    <button class="btn-ghost" onclick="doLogout()">Sign Out</button>
+  `;
+  document.getElementById('hcta-out').style.display = 'none';
+  document.getElementById('hcta-in').style.display = 'block';
+  document.getElementById('sb-auth').style.display = 'block';
+  if(CU.role==='admin') document.getElementById('sb-admin').style.display = 'block';
+}
+
+function applyLoggedOut() {
+  document.getElementById('nav-right').innerHTML = `
+    <button class="btn-ghost" onclick="openLogin()">Log in</button>
+    <button class="btn-accent" onclick="openSignup()">Join Free</button>
+  `;
+  document.getElementById('hcta-out').style.display = 'flex';
+  document.getElementById('hcta-in').style.display = 'none';
+  document.getElementById('sb-auth').style.display = 'none';
+  document.getElementById('sb-admin').style.display = 'none';
+}
+
+const sh = s => { let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h)+s.charCodeAt(i)|0; return (h>>>0).toString(16); };
+
+// =====================================================
+// UPLOAD
+// =====================================================
+function openUpload() {
+  if(!CU) { openLogin(); return; }
+  uploadAF=null; uploadCover=null;
+  document.getElementById('afn').textContent='';
+  document.getElementById('cfn').textContent='';
+  document.getElementById('cprev').innerHTML='🖼️';
+  ['utitle','ugenre','udesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('uerr').classList.remove('show');
+  document.getElementById('uprog-wrap').style.display='none';
+  document.getElementById('ubtn').disabled=false;
+  om('m-upload');
+}
+
+function handleAF(input) {
+  if(!input.files[0]) return;
+  const f=input.files[0];
+  if(f.size>20*1024*1024) { toast('❌','File too large (max 20MB)'); return; }
+  uploadAF=f;
+  document.getElementById('afn').textContent='✓ '+f.name;
+  document.getElementById('uz-audio').classList.remove('drag');
+}
+
+function dropAudio(e) {
+  e.preventDefault();
+  document.getElementById('uz-audio').classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f) { uploadAF=f; document.getElementById('afn').textContent='✓ '+f.name; }
+}
+
+function handleCF(input) {
+  if(!input.files[0]) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    uploadCover=ev.target.result;
+    document.getElementById('cprev').innerHTML=`<img src="${uploadCover}" style="width:100%;height:100%;object-fit:cover">`;
+    document.getElementById('cfn').textContent='✓ '+input.files[0].name;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function setUProg(pct,msg) {
+  document.getElementById('uprog-wrap').style.display='block';
+  document.getElementById('uprog-fill').style.width=pct+'%';
+  document.getElementById('uprog-txt').textContent=msg;
+}
+
+async function doUpload() {
+  const title=document.getElementById('utitle').value.trim();
+  const genre=document.getElementById('ugenre').value.trim();
+  const license=document.getElementById('ulicense').value;
+  const desc=document.getElementById('udesc').value.trim();
+  const errEl=document.getElementById('uerr');
+  errEl.classList.remove('show');
+
+  if(!uploadAF) { errEl.textContent='Please upload an audio file.'; errEl.classList.add('show'); return; }
+  if(!title) { errEl.textContent='Please enter a track title.'; errEl.classList.add('show'); return; }
+
+  document.getElementById('ubtn').disabled=true;
+  const id='trk_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
+  const ext=uploadAF.name.split('.').pop().toLowerCase()||'mp3';
+
+  try {
+    setUProg(20,'Uploading audio...');
+    const { error: audioErr } = await sb.storage.from('tracks').upload(`audio/${id}.${ext}`, uploadAF, { contentType: uploadAF.type });
+    if(audioErr) throw audioErr;
+    const { data: audioData } = sb.storage.from('tracks').getPublicUrl(`audio/${id}.${ext}`);
+    const audioURL = audioData.publicUrl;
+
+    let coverURL = null;
+    if(uploadCover) {
+      setUProg(55,'Uploading cover...');
+      const coverBlob = await fetch(uploadCover).then(r=>r.blob());
+      const cExt = uploadCover.includes('image/png')?'png':'jpg';
+      const { error: covErr } = await sb.storage.from('tracks').upload(`covers/${id}.${cExt}`, coverBlob, { contentType: coverBlob.type });
+      if(covErr) throw covErr;
+      const { data: covData } = sb.storage.from('tracks').getPublicUrl(`covers/${id}.${cExt}`);
+      coverURL = covData.publicUrl;
+    }
+
+    setUProg(80,'Saving track info...');
+    const { error: dbErr } = await sb.from('tracks').insert({
+      id, title, genre, license, description:desc,
+      artist:CU.username, status:'pending',
+      audio_url:audioURL, cover_url:coverURL,
+      plays:0, submitted:Date.now()
+    });
+    if(dbErr) throw dbErr;
+
+    setUProg(100,'Done!');
+    setTimeout(()=>{ cm('m-upload'); toast('📨','Submitted! Awaiting admin approval.'); }, 600);
+  } catch(err) {
+    errEl.textContent='Upload failed: '+err.message;
+    errEl.classList.add('show');
+    document.getElementById('ubtn').disabled=false;
+    document.getElementById('uprog-wrap').style.display='none';
+    console.error(err);
+  }
+}
+
+// =====================================================
+// RENDER
+// =====================================================
+function card(t, showStatus=false) {
+  const sb2 = showStatus ? `<div style="margin-bottom:5px"><span class="st-${t.status}">${t.status}</span></div>` : '';
+  const cov = t.cover_url ? `<img src="${t.cover_url}" alt="" loading="lazy">` : `<span>🎵</span>`;
+  return `<div class="track-card" id="c-${t.id}">
+    <div class="tc-cover" onclick="playTrackById('${t.id}')">${cov}<div class="play-ov">▶</div></div>
+    <div class="tc-info">
+      ${sb2}
+      <div class="tc-title" title="${esc(t.title)}">${esc(t.title)}</div>
+      <div class="tc-artist">${esc(t.artist)}${t.genre?' · '+esc(t.genre):''}</div>
+      <div class="tc-meta"><span class="tc-license">${esc(t.license)}</span><span class="tc-plays">▶ ${t.plays}</span></div>
+    </div>
+    <div class="tc-acts">
+      <button class="tca" onclick="playTrackById('${t.id}')">▶ Play</button>
+      <button class="tca" id="lb-${t.id}" onclick="toggleLike('${t.id}')">♡</button>
+      <button class="tca" onclick="openShare('${t.id}','${esc(t.title)}','${esc(t.artist)}')">↗</button>
+    </div>
+  </div>`;
+}
+
+async function renderDiscover() {
+  document.getElementById('disc-loader').style.display='flex';
+  document.getElementById('disc-grid').style.display='none';
+  const { data, error } = await sb.from('tracks').select('*').eq('status','approved').order('submitted',{ascending:false});
+  document.getElementById('disc-loader').style.display='none';
+  if(error) { sbERR(error.message); return; }
+  document.getElementById('track-count').textContent=(data?.length||0)+' tracks';
+  if(!data||!data.length) { document.getElementById('disc-empty').classList.remove('hidden'); return; }
+  document.getElementById('disc-empty').classList.add('hidden');
+  document.getElementById('disc-grid').style.display='grid';
+  document.getElementById('disc-grid').innerHTML=data.map(t=>card(t)).join('');
+  if(CU) loadLikeStates(data.map(t=>t.id));
+}
+
+async function renderRecent() {
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').order('submitted',{ascending:false}).limit(20);
+  const g=document.getElementById('rec-grid'), e=document.getElementById('rec-empty');
+  if(!data||!data.length){g.innerHTML='';e.classList.remove('hidden');return;}
+  e.classList.add('hidden'); g.innerHTML=data.map(t=>card(t)).join('');
+  if(CU) loadLikeStates(data.map(t=>t.id));
+}
+
+async function renderLibrary() {
+  if(!CU){document.getElementById('lib-empty').classList.remove('hidden');return;}
+  const { data } = await sb.from('likes').select('track_id').eq('username',CU.username);
+  if(!data||!data.length){document.getElementById('lib-grid').innerHTML='';document.getElementById('lib-empty').classList.remove('hidden');return;}
+  const ids=data.map(x=>x.track_id);
+  const { data: tracks } = await sb.from('tracks').select('*').in('id',ids).eq('status','approved');
+  const g=document.getElementById('lib-grid'), e=document.getElementById('lib-empty');
+  if(!tracks||!tracks.length){g.innerHTML='';e.classList.remove('hidden');return;}
+  e.classList.add('hidden'); g.innerHTML=tracks.map(t=>card(t)).join('');
+  ids.forEach(id=>{const b=document.getElementById('lb-'+id);if(b){b.classList.add('liked');b.textContent='♥';}});
+}
+
+async function renderUploads() {
+  if(!CU) return;
+  const { data } = await sb.from('tracks').select('*').eq('artist',CU.username).order('submitted',{ascending:false});
+  const g=document.getElementById('upl-grid'), e=document.getElementById('upl-empty');
+  if(!data||!data.length){g.innerHTML='';e.classList.remove('hidden');return;}
+  e.classList.add('hidden'); g.innerHTML=data.map(t=>card(t,true)).join('');
+}
+
+async function renderProfile() {
+  if(!CU) return;
+  const { data: myTracks } = await sb.from('tracks').select('*').eq('artist',CU.username);
+  const live=(myTracks||[]).filter(t=>t.status==='approved');
+  const plays=(myTracks||[]).reduce((a,t)=>a+t.plays,0);
+  document.getElementById('prof-hdr').innerHTML=`
+    <div class="ava">${CU.username[0].toUpperCase()}</div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:2px">${esc(CU.username)}</div>
+      <div style="font-size:11px;color:var(--muted)">${CU.role==='admin'?'👑 Admin':'Member'}</div>
+      <div class="pstats">
+        <div><div class="snum">${(myTracks||[]).length}</div><div class="slbl">Uploads</div></div>
+        <div><div class="snum">${live.length}</div><div class="slbl">Live</div></div>
+        <div><div class="snum">${plays}</div><div class="slbl">Plays</div></div>
+      </div>
+    </div>`;
+  document.getElementById('prof-grid').innerHTML=live.map(t=>card(t)).join('');
+}
+
+async function loadLikeStates(ids) {
+  if(!CU||!ids.length) return;
+  const { data } = await sb.from('likes').select('track_id').eq('username',CU.username).in('track_id',ids);
+  (data||[]).forEach(x=>{const b=document.getElementById('lb-'+x.track_id);if(b){b.classList.add('liked');b.textContent='♥';}});
+}
+
+// =====================================================
+// ADMIN
+// =====================================================
+let curATab = 'pending';
+
+function aTab(t) {
+  curATab=t;
+  ['pending','approved','rejected','users'].forEach(x=>{ document.getElementById('atab-'+x).style.display=x===t?'block':'none'; });
+  document.querySelectorAll('.tab').forEach((el,i)=>{ el.classList.toggle('active',['pending','approved','rejected','users'][i]===t); });
+  renderATab();
+}
+
+function renderATab() {
+  if(curATab==='pending') renderAPending();
+  if(curATab==='approved') renderAApproved();
+  if(curATab==='rejected') renderARejected();
+  if(curATab==='users') renderAUsers();
+}
+
+async function renderAPending() {
+  document.getElementById('ap-loader').style.display='flex';
+  document.getElementById('ap-tbl').style.display='none';
+  const { data } = await sb.from('tracks').select('*').eq('status','pending').order('submitted',{ascending:true});
+  document.getElementById('ap-loader').style.display='none';
+  if(!data||!data.length){document.getElementById('ap-tbl').style.display='none';document.getElementById('ap-empty').classList.remove('hidden');return;}
+  document.getElementById('ap-empty').classList.add('hidden');
+  document.getElementById('ap-tbl').style.display='';
+  document.getElementById('ap-body').innerHTML=data.map(t=>`
+    <tr>
+      <td><strong>${esc(t.title)}</strong>${t.description?`<br><span style="color:var(--muted);font-size:11px">${esc(t.description.slice(0,50))}</span>`:''}</td>
+      <td>${esc(t.artist)}</td>
+      <td><span class="tc-license">${esc(t.license)}</span></td>
+      <td style="color:var(--muted);font-size:11px">${new Date(t.submitted).toLocaleDateString()}</td>
+      <td><div class="aacts">
+        <button class="abtn ok" onclick="aApprove('${t.id}')">✓ Approve</button>
+        <button class="abtn no" onclick="aReject('${t.id}')">✕ Reject</button>
+        <button class="tca" style="padding:4px 8px;font-size:11px;flex:none" onclick="playTrackById('${t.id}')">▶ Preview</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+async function renderAApproved() {
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').order('submitted',{ascending:false});
+  document.getElementById('aa-body').innerHTML=(data&&data.length)?data.map(t=>`
+    <tr><td><strong>${esc(t.title)}</strong></td><td>${esc(t.artist)}</td><td>${esc(t.license)}</td>
+    <td><button class="abtn no" onclick="aReject('${t.id}')">Remove</button></td></tr>`).join('')
+    :'<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No approved tracks</td></tr>';
+}
+
+async function renderARejected() {
+  const { data } = await sb.from('tracks').select('*').eq('status','rejected').order('submitted',{ascending:false});
+  document.getElementById('ar-body').innerHTML=(data&&data.length)?data.map(t=>`
+    <tr><td><strong>${esc(t.title)}</strong></td><td>${esc(t.artist)}</td>
+    <td style="color:var(--muted);font-size:11px">${new Date(t.submitted).toLocaleDateString()}</td>
+    <td><button class="abtn ok" onclick="aApprove('${t.id}')">Re-approve</button></td></tr>`).join('')
+    :'<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No rejected tracks</td></tr>';
+}
+
+async function renderAUsers() {
+  const { data } = await sb.from('users').select('*').order('joined',{ascending:false});
+  const { data: tracks } = await sb.from('tracks').select('artist');
+  const countMap={};
+  (tracks||[]).forEach(t=>{ countMap[t.artist]=(countMap[t.artist]||0)+1; });
+  document.getElementById('au-body').innerHTML=(data&&data.length)?data.map(u=>`
+    <tr><td><strong>${esc(u.username)}</strong></td><td style="color:var(--muted)">${esc(u.email)}</td>
+    <td style="color:var(--muted);font-size:11px">${new Date(u.joined).toLocaleDateString()}</td>
+    <td>${countMap[u.username]||0}</td></tr>`).join('')
+    :'<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No users yet</td></tr>';
+}
+
+async function aApprove(id) {
+  await sb.from('tracks').update({status:'approved'}).eq('id',id);
+  renderATab(); renderDiscover();
+  toast('✅','Track approved and live!');
+}
+
+async function aReject(id) {
+  await sb.from('tracks').update({status:'rejected'}).eq('id',id);
+  renderATab(); renderDiscover();
+  toast('❌','Track rejected.');
+}
+
+// =====================================================
+// PLAYER
+// =====================================================
+let currentTrackData = null;
+
+audio.addEventListener('timeupdate',()=>{
+  if(!audio.duration) return;
+  document.getElementById('progfill').style.width=(audio.currentTime/audio.duration*100)+'%';
+  document.getElementById('tcur').textContent=ft(audio.currentTime);
+});
+audio.addEventListener('loadedmetadata',()=>document.getElementById('tdur').textContent=ft(audio.duration));
+audio.addEventListener('ended',nextTrack);
+
+const ft=s=>{if(!s||isNaN(s))return'0:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;};
+
+async function playTrackById(id) {
+  const { data } = await sb.from('tracks').select('*').eq('id',id).single();
+  if(!data||!data.audio_url) { toast('❌','Audio not available'); return; }
+  playTrackData(data);
+  // inc plays
+  sb.from('tracks').update({plays: data.plays+1}).eq('id',id);
+}
+
+function playTrackData(t) {
+  currentTrackData=t;
+  audio.src=t.audio_url; audio.play();
+  document.getElementById('pbtn').textContent='⏸';
+  document.getElementById('ptitle').textContent=t.title;
+  document.getElementById('partist').textContent=t.artist;
+  const pc=document.getElementById('pcov');
+  pc.innerHTML=t.cover_url?`<img src="${t.cover_url}" style="width:100%;height:100%;object-fit:cover">`:'🎵';
+  document.getElementById('player').classList.remove('hidden');
+  shareTrk={id:t.id,title:t.title,artist:t.artist};
+}
+
+function togglePlay(){
+  if(audio.paused){audio.play();document.getElementById('pbtn').textContent='⏸';}
+  else{audio.pause();document.getElementById('pbtn').textContent='▶';}
+}
+
+async function prevTrack(){
+  if(!currentTrackData) return;
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').lt('submitted',currentTrackData.submitted).order('submitted',{ascending:false}).limit(1);
+  if(data&&data[0]) playTrackData(data[0]);
+}
+
+async function nextTrack(){
+  if(!currentTrackData) return;
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').gt('submitted',currentTrackData.submitted).order('submitted',{ascending:true}).limit(1);
+  if(data&&data[0]) playTrackData(data[0]);
+  else { audio.pause(); document.getElementById('pbtn').textContent='▶'; }
+}
+
+function seekTrack(e){
+  if(!audio.duration) return;
+  const b=document.getElementById('progbar'),r=b.getBoundingClientRect();
+  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+}
+function setVol(v){audio.volume=v;}
+
+// =====================================================
+// LIKES
+// =====================================================
+async function toggleLike(id) {
+  if(!CU){openLogin();return;}
+  const btn=document.getElementById('lb-'+id);
+  const isLiked=btn&&btn.classList.contains('liked');
+  if(isLiked) {
+    await sb.from('likes').delete().eq('username',CU.username).eq('track_id',id);
+    if(btn){btn.classList.remove('liked');btn.textContent='♡';}
+    toast('💔','Removed from library');
+  } else {
+    await sb.from('likes').insert({username:CU.username,track_id:id});
+    if(btn){btn.classList.add('liked');btn.textContent='♥';}
+    toast('💜','Added to library');
+  }
+}
+
+// =====================================================
+// SHARE
+// =====================================================
+function openShare(id, title, artist) {
+  shareTrk={id,title,artist};
+  document.getElementById('sh-name').textContent=title+' — '+artist;
+  document.getElementById('sh-link').textContent=location.href.split('?')[0]+'?track='+id;
+  om('m-share');
+}
+function openShareCur(){if(shareTrk)openShare(shareTrk.id,shareTrk.title,shareTrk.artist);}
+function copyLink(){
+  const l=document.getElementById('sh-link').textContent;
+  navigator.clipboard.writeText(l).then(()=>toast('📋','Link copied!')).catch(()=>toast('📋',l));
+}
+function shareTw(){
+  const url=encodeURIComponent(document.getElementById('sh-link').textContent);
+  const txt=encodeURIComponent(`Listening to "${shareTrk.title}" by ${shareTrk.artist} on HMuse 🎵`);
+  window.open(`https://twitter.com/intent/tweet?text=${txt}&url=${url}`,'_blank');
+}
+function shareWa(){
+  window.open(`https://wa.me/?text=${encodeURIComponent('Check out "'+shareTrk.title+'" on HMuse 🎵 '+document.getElementById('sh-link').textContent)}`,'_blank');
+}
+function shareFb(){
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(document.getElementById('sh-link').textContent)}`,'_blank');
+}
+
+// =====================================================
+// NAVIGATION
+// =====================================================
+function goLanding(){document.getElementById('landing').style.display='flex';document.getElementById('main-layout').style.display='none';}
+function showMain(){document.getElementById('landing').style.display='none';document.getElementById('main-layout').style.display='flex';}
+function activatePage(name){
+  showMain();
+  document.querySelectorAll('#main .page').forEach(p=>{p.style.display='none';p.classList.remove('active');});
+  const pg=document.getElementById('page-'+name);
+  if(pg){pg.style.display='block';pg.classList.add('active');}
+  document.querySelectorAll('.sl-link').forEach(el=>el.classList.remove('active'));
+  const sl=document.getElementById('sl-'+name);
+  if(sl) sl.classList.add('active');
+}
+function goDiscover(){activatePage('discover');renderDiscover();}
+function goRecent(){activatePage('recent');renderRecent();}
+function goLibrary(){activatePage('library');renderLibrary();}
+function goUploads(){activatePage('uploads');renderUploads();}
+function goProfile(){activatePage('profile');renderProfile();}
+function goAdmin(){if(!CU||CU.role!=='admin'){toast('❌','Admins only');return;}activatePage('admin');renderAPending();}
+function goLegal(){activatePage('legal');}
+
+// =====================================================
+// MODALS
+// =====================================================
+function om(id){document.getElementById(id).classList.remove('hidden');}
+function cm(id){document.getElementById(id).classList.add('hidden');}
+document.querySelectorAll('.mov').forEach(el=>{el.addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});});
+
+// =====================================================
+// TOAST
+// =====================================================
+let tTimer;
+function toast(ic,msg){
+  document.getElementById('t-ic').textContent=ic;
+  document.getElementById('t-msg').textContent=msg;
+  const el=document.getElementById('toast');
+  el.classList.add('show');
+  clearTimeout(tTimer);
+  tTimer=setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// START
+init();
+</script>
 </body>
 </html>
