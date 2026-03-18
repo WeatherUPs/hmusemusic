@@ -22,19 +22,17 @@ input,textarea,select{font-family:inherit}
 .hidden{display:none!important}
 .page{display:none}.page.active{display:block}
 
-/* NAV */
 #topnav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;background:rgba(12,12,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px}
 .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;flex-shrink:0}
-#gh-status{font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px}
-.gh-dot{width:7px;height:7px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:background 0.3s}
-.gh-dot.ok{background:var(--green)}.gh-dot.err{background:var(--red)}
+#sb-status{font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:background 0.3s}
+.sb-dot.ok{background:var(--green)}.sb-dot.err{background:var(--red)}
 #nav-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:7px 14px;border-radius:8px;transition:all 0.2s}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
 .btn-accent{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;transition:all 0.2s}
 .btn-accent:hover{background:var(--accent2)}
 
-/* LAYOUT */
 #app{padding-top:60px;min-height:100vh}
 .layout{display:flex;min-height:calc(100vh - 60px)}
 #sidebar{width:200px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:16px 8px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
@@ -44,27 +42,22 @@ input,textarea,select{font-family:inherit}
 .sl-link.active{background:var(--accent-dim);color:var(--accent)}
 #main{flex:1;min-width:0}
 
-/* LANDING */
 #landing{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(124,92,252,0.1) 0%,transparent 70%)}
 #landing h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(52px,10vw,96px);background:linear-gradient(135deg,#fff 20%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;line-height:1;margin-bottom:14px}
-.tagline{font-size:17px;color:var(--muted);text-align:center;max-width:400px;margin:0 auto 32px}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:600px;width:100%;margin-bottom:32px}
 .feat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
 .feat-icon{font-size:22px;margin-bottom:6px}
 .feat-card h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px}
 .feat-card p{font-size:11px;color:var(--muted)}
 
-/* CONTENT */
 .content{padding:24px 24px 100px}
 .sec-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .sec-badge{font-size:11px;font-weight:400;color:var(--muted);background:var(--surface2);padding:3px 9px;border-radius:20px}
 
-/* HERO BAND */
 .hero-band{padding:44px 24px 32px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(124,92,252,0.1) 0%,transparent 70%);border-bottom:1px solid var(--border);text-align:center}
 .hero-band h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,5vw,48px);margin-bottom:8px}
 .hero-band p{color:var(--muted);max-width:380px;margin:0 auto 20px;font-size:14px}
 
-/* MUSIC GRID */
 .music-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:16px;margin-bottom:32px}
 .track-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.2s}
 .track-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(124,92,252,0.12)}
@@ -82,16 +75,15 @@ input,textarea,select{font-family:inherit}
 .tca{flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px;border-radius:6px;transition:all 0.15s;cursor:pointer}
 .tca:hover{border-color:var(--accent);color:var(--accent)}
 .tca.liked{color:var(--red);border-color:var(--red)}
-.status-pending{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.3);margin-bottom:5px}
-.status-approved{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
-.status-rejected{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+.st-pending{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.3);margin-bottom:5px}
+.st-approved{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
+.st-rejected{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
 
-/* PLAYER */
 #player{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(10,10,14,0.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);height:68px;display:flex;align-items:center;padding:0 18px;gap:14px}
 .pcov{width:40px;height:40px;border-radius:7px;background:var(--surface3);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:16px}
 .pcov img{width:100%;height:100%;object-fit:cover}
 .pinfo{min-width:100px;flex-shrink:0}
-.ptitle{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.ptitle{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
 .partist{font-size:10px;color:var(--muted)}
 .pcontrols{display:flex;align-items:center;gap:8px;flex:1;max-width:460px}
 .cbtn{background:none;border:none;color:var(--muted);font-size:15px;padding:3px;transition:color 0.15s;cursor:pointer}
@@ -107,7 +99,6 @@ input,textarea,select{font-family:inherit}
 .pshar{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:11px;padding:5px 9px;border-radius:6px;cursor:pointer;transition:all 0.2s}
 .pshar:hover{border-color:var(--accent);color:var(--accent)}
 
-/* MODALS */
 .mov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:460px;padding:28px;max-height:92vh;overflow-y:auto;position:relative}
 .modal h2{font-family:'Syne',sans-serif;font-weight:700;font-size:19px;margin-bottom:5px}
@@ -126,14 +117,12 @@ textarea.fi{resize:vertical;min-height:64px}
 .mclose{position:absolute;top:12px;right:12px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:7px;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .mclose:hover{color:var(--text)}
 
-/* UPLOAD ZONE */
 .uz{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;margin-bottom:4px}
 .uz:hover,.uz.drag{border-color:var(--accent);background:rgba(124,92,252,0.05)}
 .uz-icon{font-size:26px;margin-bottom:6px}
 .uz p{font-size:12px;color:var(--muted)}
 .ufn{font-size:11px;color:var(--green);margin-top:4px}
 
-/* ADMIN */
 .tabs{display:flex;gap:3px;background:var(--surface2);padding:3px;border-radius:10px;margin-bottom:20px}
 .tab{flex:1;text-align:center;padding:7px;border-radius:7px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all 0.15s}
 .tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.3)}
@@ -149,37 +138,30 @@ textarea.fi{resize:vertical;min-height:64px}
 .abtn.no{background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.3);color:var(--red)}
 .abtn.no:hover{background:rgba(239,68,68,0.25)}
 
-/* SHARE */
 .slink{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--muted);margin-bottom:12px;word-break:break-all}
 .sbtns{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .sbtn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:12px;padding:9px;border-radius:8px;transition:all 0.15s;display:flex;align-items:center;gap:6px;justify-content:center;cursor:pointer}
 .sbtn:hover{border-color:var(--accent);color:var(--accent)}
 
-/* PROFILE */
 .prof-hdr{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;display:flex;align-items:center;gap:18px}
 .ava{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:#fff;flex-shrink:0}
 .pstats{display:flex;gap:18px;margin-top:8px}
 .snum{font-family:'Syne',sans-serif;font-weight:700;font-size:17px}
 .slbl{font-size:10px;color:var(--muted)}
 
-/* LOADER */
 .loader{display:flex;align-items:center;justify-content:center;padding:50px;color:var(--muted);font-size:13px;gap:10px}
 .spin{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* EMPTY */
 .empty{text-align:center;padding:44px 16px;color:var(--muted)}
 .empty-ic{font-size:40px;margin-bottom:8px}
 .empty h3{font-family:'Syne',sans-serif;font-size:15px;color:var(--text);margin-bottom:5px}
 
-/* PEND NOTICE */
 .pnotice{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--amber);margin-bottom:16px}
 
-/* UPLOAD PROG */
 .uprog{background:var(--surface2);border-radius:4px;height:5px;overflow:hidden;margin-bottom:8px}
 .uprog-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.3s}
 
-/* TOAST */
 #toast{position:fixed;bottom:80px;right:16px;z-index:900;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,0.4);transform:translateY(14px);opacity:0;transition:all 0.3s;pointer-events:none;display:flex;align-items:center;gap:8px}
 #toast.show{transform:translateY(0);opacity:1}
 
@@ -197,7 +179,7 @@ textarea.fi{resize:vertical;min-height:64px}
 
 <nav id="topnav">
   <div class="nav-logo" onclick="goLanding()">HMuse</div>
-  <div id="gh-status"><div class="gh-dot" id="gh-dot"></div><span id="gh-txt">Connecting...</span></div>
+  <div id="sb-status"><div class="sb-dot" id="sb-dot"></div><span id="sb-txt">Connecting...</span></div>
   <div id="nav-right">
     <button class="btn-ghost" onclick="openLogin()">Log in</button>
     <button class="btn-accent" onclick="openSignup()">Join Free</button>
@@ -209,7 +191,7 @@ textarea.fi{resize:vertical;min-height:64px}
   <!-- LANDING -->
   <div id="landing">
     <h1>HMuse</h1>
-    <p class="tagline">Upload your music. Share it with the world. Free, forever.</p>
+    <p style="font-size:17px;color:var(--muted);text-align:center;max-width:400px;margin:0 auto 32px">Upload your music. Share it with the world. Free, forever.</p>
     <div class="feat-grid">
       <div class="feat-card"><div class="feat-icon">🎵</div><h3>Upload & Share</h3><p>Your music, your terms.</p></div>
       <div class="feat-card"><div class="feat-icon">🎧</div><h3>Listen Free</h3><p>Stream any approved track.</p></div>
@@ -223,7 +205,6 @@ textarea.fi{resize:vertical;min-height:64px}
 
   <!-- MAIN LAYOUT -->
   <div id="main-layout" style="display:none" class="layout">
-
     <div id="sidebar">
       <div class="sl-label" style="margin-top:4px">Explore</div>
       <div class="sl-link active" id="sl-discover" onclick="goDiscover()">🔥 Discover</div>
@@ -259,7 +240,7 @@ textarea.fi{resize:vertical;min-height:64px}
         </div>
         <div class="content">
           <div class="sec-title">All Tracks <span class="sec-badge" id="track-count">loading...</span></div>
-          <div id="disc-loader" class="loader"><div class="spin"></div>Loading from GitHub...</div>
+          <div id="disc-loader" class="loader"><div class="spin"></div>Loading...</div>
           <div class="music-grid" id="disc-grid" style="display:none"></div>
           <div class="empty hidden" id="disc-empty"><div class="empty-ic">🎵</div><h3>No approved tracks yet</h3><p>Be the first to upload!</p></div>
         </div>
@@ -332,22 +313,22 @@ textarea.fi{resize:vertical;min-height:64px}
           <div class="sec-title">Legal & Policies</div>
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:14px">
             <h3 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;color:var(--accent)">Terms & Conditions</h3>
-            <p style="color:var(--muted);line-height:1.8;font-size:13px">By uploading to HMuse, you confirm you own 100% of the rights to your music. You grant HMuse a non-exclusive licence to stream your track to users. You may not upload covers, samples, or content you do not own. All uploads are subject to admin approval before going live. HMuse reserves the right to remove any content at any time.</p>
+            <p style="color:var(--muted);line-height:1.8;font-size:13px">By uploading to HMuse, you confirm you own 100% of the rights to your music. You grant HMuse a non-exclusive licence to stream your track to users. You may not upload covers, samples, or content you do not own. All uploads are subject to admin approval before going live.</p>
           </div>
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:14px">
             <h3 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;color:var(--accent)">DMCA Safe Harbour</h3>
-            <p style="color:var(--muted);line-height:1.8;font-size:13px">HMuse complies with the Digital Millennium Copyright Act (17 U.S.C. § 512). To file a takedown notice provide: (1) identification of the copyrighted work, (2) the infringing URL, (3) your contact details, (4) a statement of good faith belief. We will remove infringing content within 48 hours of a valid notice.</p>
+            <p style="color:var(--muted);line-height:1.8;font-size:13px">HMuse complies with the Digital Millennium Copyright Act. To file a takedown notice provide: (1) identification of the copyrighted work, (2) the infringing URL, (3) your contact details, (4) a statement of good faith belief. We will remove infringing content within 48 hours.</p>
           </div>
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px">
             <h3 style="font-family:'Syne',sans-serif;font-size:15px;margin-bottom:8px;color:var(--accent)">Privacy Policy</h3>
-            <p style="color:var(--muted);line-height:1.8;font-size:13px">We collect only what is necessary: your username, email, and upload metadata, stored in a GitHub repository. We do not sell your data. You own your music. You own your data.</p>
+            <p style="color:var(--muted);line-height:1.8;font-size:13px">We collect only what is necessary: your username, email, and upload metadata, stored securely in Supabase. We do not sell your data. You own your music. You own your data.</p>
           </div>
         </div>
       </div>
 
-    </div><!-- /main -->
-  </div><!-- /main-layout -->
-</div><!-- /app -->
+    </div>
+  </div>
+</div>
 
 <!-- PLAYER -->
 <div id="player" class="hidden">
@@ -376,9 +357,9 @@ textarea.fi{resize:vertical;min-height:64px}
     <button class="mclose" onclick="cm('m-login')">✕</button>
     <h2>Welcome back</h2><p class="msub">Sign in to your HMuse account</p>
     <div class="fg"><label class="fl">Username</label><input class="fi" id="lu" placeholder="username" autocomplete="username"></div>
-    <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <div class="ferr" id="lerr">Invalid username or password.</div>
-    <button class="bfull" onclick="doLogin()">Sign In</button>
+    <button class="bfull" id="lbtn" onclick="doLogin()">Sign In</button>
     <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">No account? <a style="color:var(--accent);cursor:pointer" onclick="cm('m-login');openSignup()">Join free</a></p>
   </div>
 </div>
@@ -392,7 +373,7 @@ textarea.fi{resize:vertical;min-height:64px}
     <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="se" placeholder="your@email.com"></div>
     <div class="fg"><label class="fl">Password</label><input class="fi" type="password" id="sp" placeholder="min 6 characters" onkeydown="if(event.key==='Enter')doSignup()"></div>
     <div class="ferr" id="serr"></div>
-    <button class="bfull" onclick="doSignup()">Create Account</button>
+    <button class="bfull" id="sbtn" onclick="doSignup()">Create Account</button>
     <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">Have an account? <a style="color:var(--accent);cursor:pointer" onclick="cm('m-signup');openLogin()">Sign in</a></p>
   </div>
 </div>
@@ -455,240 +436,160 @@ textarea.fi{resize:vertical;min-height:64px}
   </div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"><span id="t-ic">✅</span><span id="t-msg"></span></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // =====================================================
-// CONFIG
+// SUPABASE CONFIG
 // =====================================================
-const GH_TOKEN  = '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';
-const GH_OWNER  = 'WeatherUPs';
-const GH_REPO   = 'hmusemusic';
-const GH_BRANCH = 'main';
-const API       = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}`;
-const RAW       = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}`;
-const ADMIN_U   = 'henwenskeeper';
-const ADMIN_P   = '12241224';
+const SB_URL  = 'https://veuvkutbzhbwwlkoxwaz.supabase.co';
+const SB_KEY  = 'sb_publishable_oKnlJ85a4RJyMdQbuknhQg_Ha6Au53F';
+const sb      = supabase.createClient(SB_URL, SB_KEY);
 
-// =====================================================
-// GITHUB HELPERS
-// =====================================================
-const ghH = {'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
-
-async function ghGet(path){
-  const r=await fetch(`${API}/contents/${path}`,{headers:ghH});
-  if(r.status===404) return null;
-  if(!r.ok) throw new Error('GET '+path+' failed: '+r.status);
-  return r.json();
-}
-
-async function ghReadJSON(path,fb=null){
-  try{
-    const f=await ghGet(path);
-    if(!f) return {data:fb,sha:null};
-    const data=JSON.parse(atob(f.content.replace(/\n/g,'')));
-    return {data,sha:f.sha};
-  }catch(e){console.warn('ghReadJSON',path,e);return {data:fb,sha:null};}
-}
-
-async function ghWriteJSON(path,content,sha,msg='update'){
-  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(content,null,2))));
-  const body={message:msg,content:encoded,branch:GH_BRANCH};
-  if(sha) body.sha=sha;
-  const r=await fetch(`${API}/contents/${path}`,{method:'PUT',headers:ghH,body:JSON.stringify(body)});
-  if(!r.ok){const t=await r.text();throw new Error('WRITE '+path+' failed: '+r.status+' '+t.slice(0,200));}
-  const j=await r.json();
-  return j.content.sha;
-}
-
-async function ghWriteFile(path,b64,sha,msg='file'){
-  const body={message:msg,content:b64,branch:GH_BRANCH};
-  if(sha) body.sha=sha;
-  const r=await fetch(`${API}/contents/${path}`,{method:'PUT',headers:ghH,body:JSON.stringify(body)});
-  if(!r.ok){const t=await r.text();throw new Error('WRITE FILE '+path+' failed: '+r.status+' '+t.slice(0,200));}
-  const j=await r.json();
-  return j.content.sha;
-}
+const ADMIN_U = 'henwenskeeper';
+const ADMIN_P = '12241224';
 
 // =====================================================
 // STATE
 // =====================================================
-let CU=null; // current user {username,role}
-let tracks=[], tSHA=null;
-let users=[],  uSHA=null;
-let likes={},  lSHA=null;
-let uploadAF=null, uploadCover=null; // audio File, cover base64
-let shareTrk=null;
-let queue=[], qi=-1;
-const audio=new Audio();
+let CU = null; // {username, role}
+let uploadAF = null, uploadCover = null;
+let shareTrk = null;
+let queue = [], qi = -1;
+const audio = new Audio();
 
-try{const s=sessionStorage.getItem('hm_sess');if(s)CU=JSON.parse(s);}catch(e){}
+try { const s = sessionStorage.getItem('hm_sess'); if(s) CU = JSON.parse(s); } catch(e) {}
 
 // =====================================================
 // INIT
 // =====================================================
-async function init(){
-  // Test GitHub connection
-  try{
-    const r=await fetch(`${API}`,{headers:{'Authorization':'token '+GH_TOKEN}});
-    if(r.ok){ghOK('Connected ✓');}
-    else{ghERR('GitHub error '+r.status);}
-  }catch(e){ghERR('Cannot reach GitHub');}
-
-  await ensureFiles();
-  const {data,sha}=await ghReadJSON('data/tracks.json',[]);
-  tracks=data||[]; tSHA=sha;
-  document.getElementById('track-count').textContent=tracks.filter(t=>t.status==='approved').length+' tracks';
+async function init() {
+  // Test connection
+  try {
+    const { error } = await sb.from('tracks').select('id').limit(1);
+    if(error) throw error;
+    sbOK('Connected ✓');
+  } catch(e) {
+    sbERR('DB error: ' + e.message);
+  }
 
   if(CU) applyLoggedIn();
   goDiscover();
 
-  const tp=new URLSearchParams(location.search).get('track');
-  if(tp){const t=tracks.find(x=>x.id===tp);if(t)setTimeout(()=>playTrack(tp),500);}
+  const tp = new URLSearchParams(location.search).get('track');
+  if(tp) setTimeout(() => playTrackById(tp), 600);
 }
 
-function ghOK(msg){
-  document.getElementById('gh-dot').className='gh-dot ok';
-  document.getElementById('gh-txt').textContent=msg;
-}
-function ghERR(msg){
-  document.getElementById('gh-dot').className='gh-dot err';
-  document.getElementById('gh-txt').textContent=msg;
-}
-
-async function ensureFiles(){
-  const paths=['data/tracks.json','data/users.json','data/likes.json'];
-  const defaults=[[],'[]','{}'];
-  for(let i=0;i<paths.length;i++){
-    const f=await ghGet(paths[i]);
-    if(!f){
-      const def=i===0?[]:i===1?[]:{}; 
-      await ghWriteJSON(paths[i],def,null,'init '+paths[i]);
-    }
-  }
-}
-
-async function reloadTracks(){
-  const {data,sha}=await ghReadJSON('data/tracks.json',[]);
-  tracks=data||[]; tSHA=sha;
-}
-async function reloadUsers(){
-  const {data,sha}=await ghReadJSON('data/users.json',[]);
-  users=data||[]; uSHA=sha;
-}
-async function reloadLikes(){
-  const {data,sha}=await ghReadJSON('data/likes.json',{});
-  likes=data||{}; lSHA=sha;
-}
+function sbOK(msg) { document.getElementById('sb-dot').className='sb-dot ok'; document.getElementById('sb-txt').textContent=msg; }
+function sbERR(msg) { document.getElementById('sb-dot').className='sb-dot err'; document.getElementById('sb-txt').textContent=msg; }
 
 // =====================================================
 // AUTH
 // =====================================================
-function openLogin(){
+function openLogin() {
   document.getElementById('lu').value='';
   document.getElementById('lp').value='';
   document.getElementById('lerr').classList.remove('show');
   om('m-login');
 }
-function openSignup(){
+function openSignup() {
   document.getElementById('serr').classList.remove('show');
   om('m-signup');
 }
 
-async function doLogin(){
-  const u=document.getElementById('lu').value.trim();
-  const p=document.getElementById('lp').value;
+async function doLogin() {
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value;
   document.getElementById('lerr').classList.remove('show');
+  document.getElementById('lbtn').disabled = true;
 
-  if(u===ADMIN_U && p===ADMIN_P){
-    CU={username:ADMIN_U,role:'admin'};
-    sessionStorage.setItem('hm_sess',JSON.stringify(CU));
+  // Admin
+  if(u === ADMIN_U && p === ADMIN_P) {
+    CU = {username: ADMIN_U, role: 'admin'};
+    sessionStorage.setItem('hm_sess', JSON.stringify(CU));
     cm('m-login'); applyLoggedIn();
-    toast('✅','Welcome back, Admin!');
-    goAdmin(); return;
+    toast('✅', 'Welcome back, Admin!');
+    goAdmin(); document.getElementById('lbtn').disabled = false; return;
   }
 
-  await reloadUsers();
-  const h=sh(p);
-  const usr=users.find(x=>x.username===u && x.passwordHash===h);
-  if(!usr){document.getElementById('lerr').classList.add('show');return;}
+  const { data, error } = await sb.from('users').select('*').eq('username', u).eq('password_hash', sh(p)).single();
+  document.getElementById('lbtn').disabled = false;
+  if(error || !data) { document.getElementById('lerr').classList.add('show'); return; }
 
-  CU={username:usr.username,role:'user'};
-  sessionStorage.setItem('hm_sess',JSON.stringify(CU));
+  CU = {username: data.username, role: 'user'};
+  sessionStorage.setItem('hm_sess', JSON.stringify(CU));
   cm('m-login'); applyLoggedIn();
-  toast('✅','Welcome back, '+usr.username+'!');
+  toast('✅', 'Welcome back, ' + data.username + '!');
   goDiscover();
 }
 
-async function doSignup(){
-  const u=document.getElementById('su').value.trim();
-  const e=document.getElementById('se').value.trim();
-  const p=document.getElementById('sp').value;
-  const errEl=document.getElementById('serr');
+async function doSignup() {
+  const u = document.getElementById('su').value.trim();
+  const e = document.getElementById('se').value.trim();
+  const p = document.getElementById('sp').value;
+  const errEl = document.getElementById('serr');
   errEl.classList.remove('show');
+  document.getElementById('sbtn').disabled = true;
 
-  if(!u||!e||!p){errEl.textContent='Please fill all fields.';errEl.classList.add('show');return;}
-  if(u.length<3){errEl.textContent='Username must be at least 3 characters.';errEl.classList.add('show');return;}
-  if(p.length<6){errEl.textContent='Password must be at least 6 characters.';errEl.classList.add('show');return;}
-  if(u===ADMIN_U){errEl.textContent='That username is reserved.';errEl.classList.add('show');return;}
+  if(!u||!e||!p) { errEl.textContent='Please fill all fields.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
+  if(u.length<3) { errEl.textContent='Username must be at least 3 characters.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
+  if(p.length<6) { errEl.textContent='Password must be at least 6 characters.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
+  if(u===ADMIN_U) { errEl.textContent='That username is reserved.'; errEl.classList.add('show'); document.getElementById('sbtn').disabled=false; return; }
 
-  await reloadUsers();
-  if(users.find(x=>x.username===u)){errEl.textContent='Username already taken.';errEl.classList.add('show');return;}
-  if(users.find(x=>x.email===e)){errEl.textContent='Email already registered.';errEl.classList.add('show');return;}
+  const { error } = await sb.from('users').insert({ username:u, email:e, password_hash:sh(p), joined:Date.now() });
+  document.getElementById('sbtn').disabled = false;
+  if(error) {
+    if(error.message.includes('unique')) errEl.textContent = 'Username or email already taken.';
+    else errEl.textContent = 'Error: ' + error.message;
+    errEl.classList.add('show'); return;
+  }
 
-  try{
-    const updated=[...users,{username:u,email:e,passwordHash:sh(p),joined:Date.now()}];
-    uSHA=await ghWriteJSON('data/users.json',updated,uSHA,'signup: '+u);
-    users=updated;
-  }catch(err){errEl.textContent='Error saving: '+err.message;errEl.classList.add('show');return;}
-
-  CU={username:u,role:'user'};
-  sessionStorage.setItem('hm_sess',JSON.stringify(CU));
+  CU = {username: u, role: 'user'};
+  sessionStorage.setItem('hm_sess', JSON.stringify(CU));
   cm('m-signup'); applyLoggedIn();
-  toast('🎉','Welcome to HMuse, '+u+'!');
+  toast('🎉', 'Welcome to HMuse, ' + u + '!');
   goDiscover();
 }
 
-function doLogout(){
-  CU=null; sessionStorage.removeItem('hm_sess');
+function doLogout() {
+  CU = null; sessionStorage.removeItem('hm_sess');
   applyLoggedOut(); goLanding();
-  toast('👋','Signed out');
+  toast('👋', 'Signed out');
 }
 
-function applyLoggedIn(){
-  document.getElementById('nav-right').innerHTML=`
+function applyLoggedIn() {
+  document.getElementById('nav-right').innerHTML = `
     <span style="font-size:13px;color:var(--muted)">👋 ${esc(CU.username)}</span>
     ${CU.role==='admin'?'<button class="btn-ghost" onclick="goAdmin()">⚙️ Admin</button>':''}
     <button class="btn-ghost" onclick="openUpload()">+ Upload</button>
     <button class="btn-ghost" onclick="doLogout()">Sign Out</button>
   `;
-  document.getElementById('hcta-out').style.display='none';
-  document.getElementById('hcta-in').style.display='block';
-  document.getElementById('sb-auth').style.display='block';
-  if(CU.role==='admin') document.getElementById('sb-admin').style.display='block';
+  document.getElementById('hcta-out').style.display = 'none';
+  document.getElementById('hcta-in').style.display = 'block';
+  document.getElementById('sb-auth').style.display = 'block';
+  if(CU.role==='admin') document.getElementById('sb-admin').style.display = 'block';
 }
 
-function applyLoggedOut(){
-  document.getElementById('nav-right').innerHTML=`
+function applyLoggedOut() {
+  document.getElementById('nav-right').innerHTML = `
     <button class="btn-ghost" onclick="openLogin()">Log in</button>
     <button class="btn-accent" onclick="openSignup()">Join Free</button>
   `;
-  document.getElementById('hcta-out').style.display='flex';
-  document.getElementById('hcta-in').style.display='none';
-  document.getElementById('sb-auth').style.display='none';
-  document.getElementById('sb-admin').style.display='none';
+  document.getElementById('hcta-out').style.display = 'flex';
+  document.getElementById('hcta-in').style.display = 'none';
+  document.getElementById('sb-auth').style.display = 'none';
+  document.getElementById('sb-admin').style.display = 'none';
 }
 
-// simple hash
-function sh(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)+s.charCodeAt(i)|0;return(h>>>0).toString(16);}
+const sh = s => { let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h)+s.charCodeAt(i)|0; return (h>>>0).toString(16); };
 
 // =====================================================
 // UPLOAD
 // =====================================================
-function openUpload(){
-  if(!CU){openLogin();return;}
-  uploadAF=null;uploadCover=null;
+function openUpload() {
+  if(!CU) { openLogin(); return; }
+  uploadAF=null; uploadCover=null;
   document.getElementById('afn').textContent='';
   document.getElementById('cfn').textContent='';
   document.getElementById('cprev').innerHTML='🖼️';
@@ -699,23 +600,23 @@ function openUpload(){
   om('m-upload');
 }
 
-function handleAF(input){
+function handleAF(input) {
   if(!input.files[0]) return;
   const f=input.files[0];
-  if(f.size>20*1024*1024){toast('❌','File too large (max 20MB)');return;}
+  if(f.size>20*1024*1024) { toast('❌','File too large (max 20MB)'); return; }
   uploadAF=f;
   document.getElementById('afn').textContent='✓ '+f.name;
   document.getElementById('uz-audio').classList.remove('drag');
 }
 
-function dropAudio(e){
+function dropAudio(e) {
   e.preventDefault();
   document.getElementById('uz-audio').classList.remove('drag');
   const f=e.dataTransfer.files[0];
-  if(f){uploadAF=f;document.getElementById('afn').textContent='✓ '+f.name;}
+  if(f) { uploadAF=f; document.getElementById('afn').textContent='✓ '+f.name; }
 }
 
-function handleCF(input){
+function handleCF(input) {
   if(!input.files[0]) return;
   const reader=new FileReader();
   reader.onload=ev=>{
@@ -726,13 +627,13 @@ function handleCF(input){
   reader.readAsDataURL(input.files[0]);
 }
 
-function setUProg(pct,msg){
+function setUProg(pct,msg) {
   document.getElementById('uprog-wrap').style.display='block';
   document.getElementById('uprog-fill').style.width=pct+'%';
   document.getElementById('uprog-txt').textContent=msg;
 }
 
-async function doUpload(){
+async function doUpload() {
   const title=document.getElementById('utitle').value.trim();
   const genre=document.getElementById('ugenre').value.trim();
   const license=document.getElementById('ulicense').value;
@@ -740,42 +641,43 @@ async function doUpload(){
   const errEl=document.getElementById('uerr');
   errEl.classList.remove('show');
 
-  if(!uploadAF){errEl.textContent='Please upload an audio file.';errEl.classList.add('show');return;}
-  if(!title){errEl.textContent='Please enter a track title.';errEl.classList.add('show');return;}
+  if(!uploadAF) { errEl.textContent='Please upload an audio file.'; errEl.classList.add('show'); return; }
+  if(!title) { errEl.textContent='Please enter a track title.'; errEl.classList.add('show'); return; }
 
   document.getElementById('ubtn').disabled=true;
   const id='trk_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
   const ext=uploadAF.name.split('.').pop().toLowerCase()||'mp3';
 
-  try{
-    setUProg(10,'Reading audio...');
-    const audioB64=await f2b64(uploadAF);
+  try {
+    setUProg(20,'Uploading audio...');
+    const { error: audioErr } = await sb.storage.from('tracks').upload(`audio/${id}.${ext}`, uploadAF, { contentType: uploadAF.type });
+    if(audioErr) throw audioErr;
+    const { data: audioData } = sb.storage.from('tracks').getPublicUrl(`audio/${id}.${ext}`);
+    const audioURL = audioData.publicUrl;
 
-    setUProg(30,'Uploading audio to GitHub...');
-    const aPath=`files/audio/${id}.${ext}`;
-    await ghWriteFile(aPath,audioB64,null,'audio: '+title);
-    const audioURL=`${RAW}/${aPath}`;
-
-    let coverURL=null;
-    if(uploadCover){
-      setUProg(55,'Uploading cover art...');
-      const cB64=uploadCover.split(',')[1];
-      const cExt=uploadCover.includes('image/png')?'png':'jpg';
-      const cPath=`files/covers/${id}.${cExt}`;
-      await ghWriteFile(cPath,cB64,null,'cover: '+title);
-      coverURL=`${RAW}/${cPath}`;
+    let coverURL = null;
+    if(uploadCover) {
+      setUProg(55,'Uploading cover...');
+      const coverBlob = await fetch(uploadCover).then(r=>r.blob());
+      const cExt = uploadCover.includes('image/png')?'png':'jpg';
+      const { error: covErr } = await sb.storage.from('tracks').upload(`covers/${id}.${cExt}`, coverBlob, { contentType: coverBlob.type });
+      if(covErr) throw covErr;
+      const { data: covData } = sb.storage.from('tracks').getPublicUrl(`covers/${id}.${cExt}`);
+      coverURL = covData.publicUrl;
     }
 
-    setUProg(75,'Saving track info...');
-    await reloadTracks();
-    const trk={id,title,genre,license,desc,artist:CU.username,status:'pending',audioURL,coverURL,plays:0,submitted:Date.now()};
-    const updated=[...tracks,trk];
-    tSHA=await ghWriteJSON('data/tracks.json',updated,tSHA,'track: '+title);
-    tracks=updated;
+    setUProg(80,'Saving track info...');
+    const { error: dbErr } = await sb.from('tracks').insert({
+      id, title, genre, license, description:desc,
+      artist:CU.username, status:'pending',
+      audio_url:audioURL, cover_url:coverURL,
+      plays:0, submitted:Date.now()
+    });
+    if(dbErr) throw dbErr;
 
     setUProg(100,'Done!');
-    setTimeout(()=>{cm('m-upload');toast('📨','Submitted! Awaiting admin approval.');},600);
-  }catch(err){
+    setTimeout(()=>{ cm('m-upload'); toast('📨','Submitted! Awaiting admin approval.'); }, 600);
+  } catch(err) {
     errEl.textContent='Upload failed: '+err.message;
     errEl.classList.add('show');
     document.getElementById('ubtn').disabled=false;
@@ -784,174 +686,182 @@ async function doUpload(){
   }
 }
 
-const f2b64=file=>new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
-
 // =====================================================
 // RENDER
 // =====================================================
-function card(t,showStatus=false){
-  const liked=isLiked(t.id);
-  const sb=showStatus?`<div style="margin-bottom:5px"><span class="status-${t.status}">${t.status}</span></div>`:'';
-  const cov=t.coverURL?`<img src="${t.coverURL}" alt="" loading="lazy">`:`<span>🎵</span>`;
+function card(t, showStatus=false) {
+  const sb2 = showStatus ? `<div style="margin-bottom:5px"><span class="st-${t.status}">${t.status}</span></div>` : '';
+  const cov = t.cover_url ? `<img src="${t.cover_url}" alt="" loading="lazy">` : `<span>🎵</span>`;
   return `<div class="track-card" id="c-${t.id}">
-    <div class="tc-cover" onclick="playTrack('${t.id}')">${cov}<div class="play-ov">▶</div></div>
+    <div class="tc-cover" onclick="playTrackById('${t.id}')">${cov}<div class="play-ov">▶</div></div>
     <div class="tc-info">
-      ${sb}
+      ${sb2}
       <div class="tc-title" title="${esc(t.title)}">${esc(t.title)}</div>
       <div class="tc-artist">${esc(t.artist)}${t.genre?' · '+esc(t.genre):''}</div>
       <div class="tc-meta"><span class="tc-license">${esc(t.license)}</span><span class="tc-plays">▶ ${t.plays}</span></div>
     </div>
     <div class="tc-acts">
-      <button class="tca" onclick="playTrack('${t.id}')">▶</button>
-      <button class="tca ${liked?'liked':''}" id="lb-${t.id}" onclick="toggleLike('${t.id}')">${liked?'♥':'♡'}</button>
-      <button class="tca" onclick="openShare('${t.id}')">↗</button>
+      <button class="tca" onclick="playTrackById('${t.id}')">▶ Play</button>
+      <button class="tca" id="lb-${t.id}" onclick="toggleLike('${t.id}')">♡</button>
+      <button class="tca" onclick="openShare('${t.id}','${esc(t.title)}','${esc(t.artist)}')">↗</button>
     </div>
   </div>`;
 }
 
-function renderDiscover(){
-  const grid=document.getElementById('disc-grid');
-  const loader=document.getElementById('disc-loader');
-  const empty=document.getElementById('disc-empty');
-  loader.style.display='none';
-  const t=tracks.filter(x=>x.status==='approved');
-  document.getElementById('track-count').textContent=t.length+' tracks';
-  if(!t.length){grid.style.display='none';empty.classList.remove('hidden');return;}
-  empty.classList.add('hidden');grid.style.display='grid';
-  grid.innerHTML=t.map(x=>card(x)).join('');
+async function renderDiscover() {
+  document.getElementById('disc-loader').style.display='flex';
+  document.getElementById('disc-grid').style.display='none';
+  const { data, error } = await sb.from('tracks').select('*').eq('status','approved').order('submitted',{ascending:false});
+  document.getElementById('disc-loader').style.display='none';
+  if(error) { sbERR(error.message); return; }
+  document.getElementById('track-count').textContent=(data?.length||0)+' tracks';
+  if(!data||!data.length) { document.getElementById('disc-empty').classList.remove('hidden'); return; }
+  document.getElementById('disc-empty').classList.add('hidden');
+  document.getElementById('disc-grid').style.display='grid';
+  document.getElementById('disc-grid').innerHTML=data.map(t=>card(t)).join('');
+  if(CU) loadLikeStates(data.map(t=>t.id));
 }
 
-function renderRecent(){
-  const t=tracks.filter(x=>x.status==='approved').slice().reverse().slice(0,20);
-  const g=document.getElementById('rec-grid'),e=document.getElementById('rec-empty');
-  if(!t.length){g.innerHTML='';e.classList.remove('hidden');return;}
-  e.classList.add('hidden');g.innerHTML=t.map(x=>card(x)).join('');
+async function renderRecent() {
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').order('submitted',{ascending:false}).limit(20);
+  const g=document.getElementById('rec-grid'), e=document.getElementById('rec-empty');
+  if(!data||!data.length){g.innerHTML='';e.classList.remove('hidden');return;}
+  e.classList.add('hidden'); g.innerHTML=data.map(t=>card(t)).join('');
+  if(CU) loadLikeStates(data.map(t=>t.id));
 }
 
-async function renderLibrary(){
+async function renderLibrary() {
   if(!CU){document.getElementById('lib-empty').classList.remove('hidden');return;}
-  if(!lSHA) await reloadLikes();
-  const ids=likes[CU.username]||[];
-  const t=tracks.filter(x=>x.status==='approved'&&ids.includes(x.id));
-  const g=document.getElementById('lib-grid'),e=document.getElementById('lib-empty');
-  if(!t.length){g.innerHTML='';e.classList.remove('hidden');return;}
-  e.classList.add('hidden');g.innerHTML=t.map(x=>card(x)).join('');
+  const { data } = await sb.from('likes').select('track_id').eq('username',CU.username);
+  if(!data||!data.length){document.getElementById('lib-grid').innerHTML='';document.getElementById('lib-empty').classList.remove('hidden');return;}
+  const ids=data.map(x=>x.track_id);
+  const { data: tracks } = await sb.from('tracks').select('*').in('id',ids).eq('status','approved');
+  const g=document.getElementById('lib-grid'), e=document.getElementById('lib-empty');
+  if(!tracks||!tracks.length){g.innerHTML='';e.classList.remove('hidden');return;}
+  e.classList.add('hidden'); g.innerHTML=tracks.map(t=>card(t)).join('');
+  ids.forEach(id=>{const b=document.getElementById('lb-'+id);if(b){b.classList.add('liked');b.textContent='♥';}});
 }
 
-function renderUploads(){
+async function renderUploads() {
   if(!CU) return;
-  const t=tracks.filter(x=>x.artist===CU.username).slice().reverse();
-  const g=document.getElementById('upl-grid'),e=document.getElementById('upl-empty');
-  if(!t.length){g.innerHTML='';e.classList.remove('hidden');return;}
-  e.classList.add('hidden');g.innerHTML=t.map(x=>card(x,true)).join('');
+  const { data } = await sb.from('tracks').select('*').eq('artist',CU.username).order('submitted',{ascending:false});
+  const g=document.getElementById('upl-grid'), e=document.getElementById('upl-empty');
+  if(!data||!data.length){g.innerHTML='';e.classList.remove('hidden');return;}
+  e.classList.add('hidden'); g.innerHTML=data.map(t=>card(t,true)).join('');
 }
 
-function renderProfile(){
+async function renderProfile() {
   if(!CU) return;
-  const my=tracks.filter(x=>x.artist===CU.username);
-  const live=my.filter(x=>x.status==='approved');
-  const plays=my.reduce((a,x)=>a+x.plays,0);
+  const { data: myTracks } = await sb.from('tracks').select('*').eq('artist',CU.username);
+  const live=(myTracks||[]).filter(t=>t.status==='approved');
+  const plays=(myTracks||[]).reduce((a,t)=>a+t.plays,0);
   document.getElementById('prof-hdr').innerHTML=`
     <div class="ava">${CU.username[0].toUpperCase()}</div>
     <div>
       <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:2px">${esc(CU.username)}</div>
       <div style="font-size:11px;color:var(--muted)">${CU.role==='admin'?'👑 Admin':'Member'}</div>
       <div class="pstats">
-        <div><div class="snum">${my.length}</div><div class="slbl">Uploads</div></div>
+        <div><div class="snum">${(myTracks||[]).length}</div><div class="slbl">Uploads</div></div>
         <div><div class="snum">${live.length}</div><div class="slbl">Live</div></div>
         <div><div class="snum">${plays}</div><div class="slbl">Plays</div></div>
       </div>
     </div>`;
-  document.getElementById('prof-grid').innerHTML=live.map(x=>card(x)).join('');
+  document.getElementById('prof-grid').innerHTML=live.map(t=>card(t)).join('');
+}
+
+async function loadLikeStates(ids) {
+  if(!CU||!ids.length) return;
+  const { data } = await sb.from('likes').select('track_id').eq('username',CU.username).in('track_id',ids);
+  (data||[]).forEach(x=>{const b=document.getElementById('lb-'+x.track_id);if(b){b.classList.add('liked');b.textContent='♥';}});
 }
 
 // =====================================================
 // ADMIN
 // =====================================================
-let curATab='pending';
+let curATab = 'pending';
 
-function aTab(t){
+function aTab(t) {
   curATab=t;
-  ['pending','approved','rejected','users'].forEach(x=>{
-    document.getElementById('atab-'+x).style.display=x===t?'block':'none';
-  });
-  document.querySelectorAll('.tab').forEach((el,i)=>{
-    el.classList.toggle('active',['pending','approved','rejected','users'][i]===t);
-  });
+  ['pending','approved','rejected','users'].forEach(x=>{ document.getElementById('atab-'+x).style.display=x===t?'block':'none'; });
+  document.querySelectorAll('.tab').forEach((el,i)=>{ el.classList.toggle('active',['pending','approved','rejected','users'][i]===t); });
   renderATab();
 }
 
-async function renderATab(){
+function renderATab() {
   if(curATab==='pending') renderAPending();
   if(curATab==='approved') renderAApproved();
   if(curATab==='rejected') renderARejected();
-  if(curATab==='users'){await reloadUsers();renderAUsers();}
+  if(curATab==='users') renderAUsers();
 }
 
-function renderAPending(){
-  const t=tracks.filter(x=>x.status==='pending');
-  const loader=document.getElementById('ap-loader');
-  const tbl=document.getElementById('ap-tbl');
-  const empty=document.getElementById('ap-empty');
-  if(loader) loader.style.display='none';
-  if(!t.length){tbl.style.display='none';empty.classList.remove('hidden');return;}
-  empty.classList.add('hidden');tbl.style.display='';
-  document.getElementById('ap-body').innerHTML=t.map(x=>`
+async function renderAPending() {
+  document.getElementById('ap-loader').style.display='flex';
+  document.getElementById('ap-tbl').style.display='none';
+  const { data } = await sb.from('tracks').select('*').eq('status','pending').order('submitted',{ascending:true});
+  document.getElementById('ap-loader').style.display='none';
+  if(!data||!data.length){document.getElementById('ap-tbl').style.display='none';document.getElementById('ap-empty').classList.remove('hidden');return;}
+  document.getElementById('ap-empty').classList.add('hidden');
+  document.getElementById('ap-tbl').style.display='';
+  document.getElementById('ap-body').innerHTML=data.map(t=>`
     <tr>
-      <td><strong>${esc(x.title)}</strong>${x.desc?`<br><span style="color:var(--muted);font-size:11px">${esc(x.desc.slice(0,50))}</span>`:''}</td>
-      <td>${esc(x.artist)}</td>
-      <td><span class="tc-license">${esc(x.license)}</span></td>
-      <td style="color:var(--muted);font-size:11px">${new Date(x.submitted).toLocaleDateString()}</td>
+      <td><strong>${esc(t.title)}</strong>${t.description?`<br><span style="color:var(--muted);font-size:11px">${esc(t.description.slice(0,50))}</span>`:''}</td>
+      <td>${esc(t.artist)}</td>
+      <td><span class="tc-license">${esc(t.license)}</span></td>
+      <td style="color:var(--muted);font-size:11px">${new Date(t.submitted).toLocaleDateString()}</td>
       <td><div class="aacts">
-        <button class="abtn ok" onclick="aApprove('${x.id}')">✓ Approve</button>
-        <button class="abtn no" onclick="aReject('${x.id}')">✕ Reject</button>
-        <button class="tca" style="padding:4px 8px;font-size:11px;flex:none" onclick="playTrack('${x.id}')">▶ Preview</button>
+        <button class="abtn ok" onclick="aApprove('${t.id}')">✓ Approve</button>
+        <button class="abtn no" onclick="aReject('${t.id}')">✕ Reject</button>
+        <button class="tca" style="padding:4px 8px;font-size:11px;flex:none" onclick="playTrackById('${t.id}')">▶ Preview</button>
       </div></td>
     </tr>`).join('');
 }
 
-function renderAApproved(){
-  const t=tracks.filter(x=>x.status==='approved');
-  document.getElementById('aa-body').innerHTML=t.length?t.map(x=>`
-    <tr><td><strong>${esc(x.title)}</strong></td><td>${esc(x.artist)}</td><td>${esc(x.license)}</td>
-    <td><button class="abtn no" onclick="aReject('${x.id}')">Remove</button></td></tr>`).join('')
+async function renderAApproved() {
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').order('submitted',{ascending:false});
+  document.getElementById('aa-body').innerHTML=(data&&data.length)?data.map(t=>`
+    <tr><td><strong>${esc(t.title)}</strong></td><td>${esc(t.artist)}</td><td>${esc(t.license)}</td>
+    <td><button class="abtn no" onclick="aReject('${t.id}')">Remove</button></td></tr>`).join('')
     :'<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No approved tracks</td></tr>';
 }
 
-function renderARejected(){
-  const t=tracks.filter(x=>x.status==='rejected');
-  document.getElementById('ar-body').innerHTML=t.length?t.map(x=>`
-    <tr><td><strong>${esc(x.title)}</strong></td><td>${esc(x.artist)}</td>
-    <td style="color:var(--muted);font-size:11px">${new Date(x.submitted).toLocaleDateString()}</td>
-    <td><button class="abtn ok" onclick="aApprove('${x.id}')">Re-approve</button></td></tr>`).join('')
+async function renderARejected() {
+  const { data } = await sb.from('tracks').select('*').eq('status','rejected').order('submitted',{ascending:false});
+  document.getElementById('ar-body').innerHTML=(data&&data.length)?data.map(t=>`
+    <tr><td><strong>${esc(t.title)}</strong></td><td>${esc(t.artist)}</td>
+    <td style="color:var(--muted);font-size:11px">${new Date(t.submitted).toLocaleDateString()}</td>
+    <td><button class="abtn ok" onclick="aApprove('${t.id}')">Re-approve</button></td></tr>`).join('')
     :'<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No rejected tracks</td></tr>';
 }
 
-function renderAUsers(){
-  document.getElementById('au-body').innerHTML=users.length?users.map(u=>`
+async function renderAUsers() {
+  const { data } = await sb.from('users').select('*').order('joined',{ascending:false});
+  const { data: tracks } = await sb.from('tracks').select('artist');
+  const countMap={};
+  (tracks||[]).forEach(t=>{ countMap[t.artist]=(countMap[t.artist]||0)+1; });
+  document.getElementById('au-body').innerHTML=(data&&data.length)?data.map(u=>`
     <tr><td><strong>${esc(u.username)}</strong></td><td style="color:var(--muted)">${esc(u.email)}</td>
     <td style="color:var(--muted);font-size:11px">${new Date(u.joined).toLocaleDateString()}</td>
-    <td>${tracks.filter(x=>x.artist===u.username).length}</td></tr>`).join('')
+    <td>${countMap[u.username]||0}</td></tr>`).join('')
     :'<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No users yet</td></tr>';
 }
 
-async function aApprove(id){
-  const updated=tracks.map(x=>x.id===id?{...x,status:'approved'}:x);
-  tSHA=await ghWriteJSON('data/tracks.json',updated,tSHA,'approve: '+id);
-  tracks=updated; renderATab(); renderDiscover();
+async function aApprove(id) {
+  await sb.from('tracks').update({status:'approved'}).eq('id',id);
+  renderATab(); renderDiscover();
   toast('✅','Track approved and live!');
 }
 
-async function aReject(id){
-  const updated=tracks.map(x=>x.id===id?{...x,status:'rejected'}:x);
-  tSHA=await ghWriteJSON('data/tracks.json',updated,tSHA,'reject: '+id);
-  tracks=updated; renderATab(); renderDiscover();
+async function aReject(id) {
+  await sb.from('tracks').update({status:'rejected'}).eq('id',id);
+  renderATab(); renderDiscover();
   toast('❌','Track rejected.');
 }
 
 // =====================================================
 // PLAYER
 // =====================================================
+let currentTrackData = null;
+
 audio.addEventListener('timeupdate',()=>{
   if(!audio.duration) return;
   document.getElementById('progfill').style.width=(audio.currentTime/audio.duration*100)+'%';
@@ -962,39 +872,44 @@ audio.addEventListener('ended',nextTrack);
 
 const ft=s=>{if(!s||isNaN(s))return'0:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;};
 
-function playTrack(id){
-  const t=tracks.find(x=>x.id===id);
-  if(!t||!t.audioURL){toast('❌','Audio not available');return;}
-
+async function playTrackById(id) {
+  const { data } = await sb.from('tracks').select('*').eq('id',id).single();
+  if(!data||!data.audio_url) { toast('❌','Audio not available'); return; }
+  playTrackData(data);
   // inc plays
-  tracks=tracks.map(x=>x.id===id?{...x,plays:x.plays+1}:x);
-  ghReadJSON('data/tracks.json').then(({data,sha})=>{
-    if(!data) return; tSHA=sha;
-    const upd=data.map(x=>x.id===id?{...x,plays:x.plays+1}:x);
-    ghWriteJSON('data/tracks.json',upd,sha,'play: '+id).then(s=>tSHA=s);
-  });
+  sb.from('tracks').update({plays: data.plays+1}).eq('id',id);
+}
 
-  audio.src=t.audioURL; audio.play();
+function playTrackData(t) {
+  currentTrackData=t;
+  audio.src=t.audio_url; audio.play();
   document.getElementById('pbtn').textContent='⏸';
   document.getElementById('ptitle').textContent=t.title;
   document.getElementById('partist').textContent=t.artist;
   const pc=document.getElementById('pcov');
-  pc.innerHTML=t.coverURL?`<img src="${t.coverURL}" style="width:100%;height:100%;object-fit:cover">`:'🎵';
+  pc.innerHTML=t.cover_url?`<img src="${t.cover_url}" style="width:100%;height:100%;object-fit:cover">`:'🎵';
   document.getElementById('player').classList.remove('hidden');
-  queue=tracks.filter(x=>x.status==='approved');
-  qi=queue.findIndex(x=>x.id===id);
-  shareTrk=t;
+  shareTrk={id:t.id,title:t.title,artist:t.artist};
 }
 
 function togglePlay(){
   if(audio.paused){audio.play();document.getElementById('pbtn').textContent='⏸';}
   else{audio.pause();document.getElementById('pbtn').textContent='▶';}
 }
-function prevTrack(){if(qi>0){qi--;playTrack(queue[qi].id);}}
-function nextTrack(){
-  if(qi<queue.length-1){qi++;playTrack(queue[qi].id);}
-  else{audio.pause();document.getElementById('pbtn').textContent='▶';}
+
+async function prevTrack(){
+  if(!currentTrackData) return;
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').lt('submitted',currentTrackData.submitted).order('submitted',{ascending:false}).limit(1);
+  if(data&&data[0]) playTrackData(data[0]);
 }
+
+async function nextTrack(){
+  if(!currentTrackData) return;
+  const { data } = await sb.from('tracks').select('*').eq('status','approved').gt('submitted',currentTrackData.submitted).order('submitted',{ascending:true}).limit(1);
+  if(data&&data[0]) playTrackData(data[0]);
+  else { audio.pause(); document.getElementById('pbtn').textContent='▶'; }
+}
+
 function seekTrack(e){
   if(!audio.duration) return;
   const b=document.getElementById('progbar'),r=b.getBoundingClientRect();
@@ -1005,34 +920,31 @@ function setVol(v){audio.volume=v;}
 // =====================================================
 // LIKES
 // =====================================================
-function isLiked(id){return CU&&likes[CU.username]&&likes[CU.username].includes(id);}
-
-async function toggleLike(id){
+async function toggleLike(id) {
   if(!CU){openLogin();return;}
-  if(!lSHA) await reloadLikes();
-  const ul=likes[CU.username]||[];
-  const was=ul.includes(id);
-  const newUL=was?ul.filter(x=>x!==id):[...ul,id];
-  const newLikes={...likes,[CU.username]:newUL};
-  lSHA=await ghWriteJSON('data/likes.json',newLikes,lSHA,'like: '+CU.username);
-  likes=newLikes;
   const btn=document.getElementById('lb-'+id);
-  if(btn){btn.classList.toggle('liked',!was);btn.textContent=was?'♡':'♥';}
-  toast(was?'💔':'💜',was?'Removed from library':'Added to library');
+  const isLiked=btn&&btn.classList.contains('liked');
+  if(isLiked) {
+    await sb.from('likes').delete().eq('username',CU.username).eq('track_id',id);
+    if(btn){btn.classList.remove('liked');btn.textContent='♡';}
+    toast('💔','Removed from library');
+  } else {
+    await sb.from('likes').insert({username:CU.username,track_id:id});
+    if(btn){btn.classList.add('liked');btn.textContent='♥';}
+    toast('💜','Added to library');
+  }
 }
 
 // =====================================================
 // SHARE
 // =====================================================
-function openShare(id){
-  const t=tracks.find(x=>x.id===id);
-  if(!t) return;
-  shareTrk=t;
-  document.getElementById('sh-name').textContent=t.title+' — '+t.artist;
+function openShare(id, title, artist) {
+  shareTrk={id,title,artist};
+  document.getElementById('sh-name').textContent=title+' — '+artist;
   document.getElementById('sh-link').textContent=location.href.split('?')[0]+'?track='+id;
   om('m-share');
 }
-function openShareCur(){if(shareTrk)openShare(shareTrk.id);}
+function openShareCur(){if(shareTrk)openShare(shareTrk.id,shareTrk.title,shareTrk.artist);}
 function copyLink(){
   const l=document.getElementById('sh-link').textContent;
   navigator.clipboard.writeText(l).then(()=>toast('📋','Link copied!')).catch(()=>toast('📋',l));
@@ -1052,14 +964,8 @@ function shareFb(){
 // =====================================================
 // NAVIGATION
 // =====================================================
-function goLanding(){
-  document.getElementById('landing').style.display='flex';
-  document.getElementById('main-layout').style.display='none';
-}
-function showMain(){
-  document.getElementById('landing').style.display='none';
-  document.getElementById('main-layout').style.display='flex';
-}
+function goLanding(){document.getElementById('landing').style.display='flex';document.getElementById('main-layout').style.display='none';}
+function showMain(){document.getElementById('landing').style.display='none';document.getElementById('main-layout').style.display='flex';}
 function activatePage(name){
   showMain();
   document.querySelectorAll('#main .page').forEach(p=>{p.style.display='none';p.classList.remove('active');});
@@ -1071,23 +977,18 @@ function activatePage(name){
 }
 function goDiscover(){activatePage('discover');renderDiscover();}
 function goRecent(){activatePage('recent');renderRecent();}
-async function goLibrary(){activatePage('library');await reloadLikes();await renderLibrary();}
+function goLibrary(){activatePage('library');renderLibrary();}
 function goUploads(){activatePage('uploads');renderUploads();}
 function goProfile(){activatePage('profile');renderProfile();}
-function goAdmin(){
-  if(!CU||CU.role!=='admin'){toast('❌','Admins only');return;}
-  activatePage('admin');renderAPending();
-}
+function goAdmin(){if(!CU||CU.role!=='admin'){toast('❌','Admins only');return;}activatePage('admin');renderAPending();}
 function goLegal(){activatePage('legal');}
 
 // =====================================================
-// MODAL HELPERS
+// MODALS
 // =====================================================
 function om(id){document.getElementById(id).classList.remove('hidden');}
 function cm(id){document.getElementById(id).classList.add('hidden');}
-document.querySelectorAll('.mov').forEach(el=>{
-  el.addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});
-});
+document.querySelectorAll('.mov').forEach(el=>{el.addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});});
 
 // =====================================================
 // TOAST
@@ -1104,9 +1005,7 @@ function toast(ic,msg){
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// =====================================================
 // START
-// =====================================================
 init();
 </script>
 </body>
