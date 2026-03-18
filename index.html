@@ -4,104 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HMuse — Free Music Sharing</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* --- FULL ORIGINAL STYLING --- */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         :root{
             --bg:#0c0c0f;--surface:#13131a;--surface2:#1a1a24;--surface3:#22222f;
             --border:#2a2a3a;--accent:#7c5cfc;--accent2:#a855f7;--accent-dim:#3d2e7a;
             --green:#22c55e;--red:#ef4444;--amber:#f59e0b;
             --text:#f0effe;--muted:#7a7a9a;--muted2:#4a4a6a;
+            --sidebar-w:240px;--player-h:90px;
         }
-        body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
-        button{cursor:pointer;font-family:inherit}
+        body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;overflow:hidden;height:100vh}
+        button{cursor:pointer;font-family:inherit;transition:0.2s}
         .hidden{display:none!important}
         
-        #topnav{position:fixed;top:0;left:0;right:0;z-index:500;height:60px;background:rgba(12,12,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
-        .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+        /* Layout */
+        #topnav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(12,12,15,0.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:500}
+        #sidebar{position:fixed;top:60px;left:0;bottom:var(--player-h);width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);padding:20px;overflow-y:auto}
+        #main{position:fixed;top:60px;left:var(--sidebar-w);right:0;bottom:var(--player-h);padding:30px;overflow-y:auto;background:radial-gradient(circle at top left, #1a1435 0%, var(--bg) 40%)}
         
-        .btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);font-size:13px;padding:7px 14px;border-radius:8px;transition:0.2s}
-        .btn-accent{background:var(--accent);border:none;color:#fff;font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;transition:0.2s}
-        .btn-accent:hover{background:var(--accent2)}
+        /* Components */
+        .nav-logo{font-family:'Syne';font-weight:800;font-size:22px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .btn-accent{background:var(--accent);border:none;color:#fff;padding:8px 16px;border-radius:10px;font-weight:600}
+        .btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:10px}
+        
+        /* Grid */
+        .track-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:24px;margin-top:20px}
+        .track-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;transition:0.3s;cursor:pointer}
+        .track-card:hover{transform:translateY(-5px);border-color:var(--accent)}
+        .track-art{width:100%;aspect-ratio:1;background:var(--surface3);border-radius:10px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:40px}
+        
+        /* Player */
+        #player{position:fixed;bottom:0;left:0;right:0;height:var(--player-h);background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 30px;z-index:1000}
 
-        #app{padding-top:80px;min-height:100vh;display:flex;flex-direction:column;align-items:center}
-        
         /* Modals */
-        .mov{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px}
-        .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:400px;padding:28px;position:relative}
-        .fi{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:14px;padding:10px;border-radius:8px;margin-bottom:15px}
-        .fl{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase}
+        .mov{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:2000;padding:20px}
+        .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:420px;padding:32px;position:relative}
+        .fi{width:100%;background:var(--surface2);border:1px solid var(--border);color:#fff;padding:12px;border-radius:10px;margin-bottom:16px;outline:none}
+        .fi:focus{border-color:var(--accent)}
         
-        #toast{position:fixed;bottom:30px;right:30px;background:var(--surface2);border:1px solid var(--border);color:#fff;padding:12px 20px;border-radius:10px;transform:translateY(100px);transition:0.3s;opacity:0}
-        #toast.show{transform:translateY(0);opacity:1}
+        #toast{position:fixed;bottom:110px;right:30px;background:var(--accent);color:#fff;padding:12px 24px;border-radius:12px;transform:translateY(200px);transition:0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);z-index:3000}
+        #toast.show{transform:translateY(0)}
     </style>
 </head>
 <body onload="init()">
 
 <nav id="topnav">
-    <div class="nav-logo" onclick="location.reload()">HMuse</div>
-    <div id="nav-right" style="display:flex; gap:10px; align-items:center">
-        <span id="user-email" style="font-size:12px; color:var(--muted)"></span>
-        <button id="btn-login" class="btn-ghost" onclick="om('m-login')">Log In</button>
-        <button id="btn-signup" class="btn-accent" onclick="om('m-signup')">Join Free</button>
-        <button id="btn-logout" class="btn-ghost hidden" onclick="doLogout()">Log Out</button>
+    <div class="nav-logo">HMuse</div>
+    <div style="display:flex; gap:12px; align-items:center">
+        <span id="u-info" style="font-size:12px; color:var(--muted)"></span>
+        <button id="l-btn" class="btn-ghost" onclick="om('m-login')">Log In</button>
+        <button id="o-btn" class="btn-ghost hidden" onclick="doLogout()">Log Out</button>
+        <button class="btn-accent" onclick="checkUp()">+ Upload</button>
     </div>
 </nav>
 
-<div id="app">
-    <div id="landing" style="text-align:center; max-width:600px; padding-top:40px">
-        <h1 style="font-family:'Syne'; font-size:64px; margin-bottom:10px">HMuse</h1>
-        <p style="color:var(--muted); font-size:18px; margin-bottom:30px">Upload your music. Share it with the world. Free, forever.</p>
-        <button class="btn-accent" style="padding:15px 30px; font-size:16px" onclick="checkAuthAndUpload()">+ Upload Your First Track</button>
+<aside id="sidebar">
+    <div style="color:var(--muted); font-size:11px; font-weight:700; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px">Menu</div>
+    <div style="display:flex; flex-direction:column; gap:8px">
+        <button class="btn-ghost" style="text-align:left; border:none; color:var(--text)">🏠 Home</button>
+        <button class="btn-ghost" style="text-align:left; border:none">🔍 Discover</button>
+        <button class="btn-ghost" style="text-align:left; border:none">📜 My Library</button>
     </div>
-</div>
+</aside>
+
+<main id="main">
+    <header style="margin-bottom:40px">
+        <h1 style="font-family:'Syne'; font-size:42px; font-weight:800">New Releases</h1>
+        <p style="color:var(--muted)">Fresh sounds from the community</p>
+    </header>
+    
+    <div id="track-list" class="track-grid">
+        </div>
+</main>
+
+<footer id="player">
+    <div id="p-info" style="width:30%">
+        <div id="p-title" style="font-weight:600">No track selected</div>
+        <div id="p-artist" style="font-size:12px; color:var(--muted)">Select a song to play</div>
+    </div>
+    <div style="width:40%; display:flex; flex-direction:column; align-items:center; gap:8px">
+        <audio id="audio-node" controls style="height:32px; filter:invert(1) hue-rotate(180deg)"></audio>
+    </div>
+</footer>
 
 <div class="mov hidden" id="m-login">
     <div class="modal">
-        <button style="position:absolute; top:15px; right:15px; background:none; border:none; color:var(--muted)" onclick="cm('m-login')">✕</button>
-        <h2 style="margin-bottom:20px">Welcome Back</h2>
-        <label class="fl">Email</label>
-        <input class="fi" type="email" id="le" placeholder="your@email.com">
-        <label class="fl">Password</label>
-        <input class="fi" type="password" id="lp" placeholder="••••••••">
+        <h2 style="margin-bottom:20px; font-family:'Syne'">Login</h2>
+        <input class="fi" type="email" id="le" placeholder="Email">
+        <input class="fi" type="password" id="lp" placeholder="Password">
         <button class="btn-accent" style="width:100%" onclick="doLogin()">Sign In</button>
+        <p style="font-size:12px; text-align:center; margin-top:15px; color:var(--muted); cursor:pointer" onclick="cm('m-login');om('m-signup')">Don't have an account? Sign up</p>
     </div>
 </div>
 
 <div class="mov hidden" id="m-signup">
     <div class="modal">
-        <button style="position:absolute; top:15px; right:15px; background:none; border:none; color:var(--muted)" onclick="cm('m-signup')">✕</button>
-        <h2 style="margin-bottom:20px">Create Account</h2>
-        <label class="fl">Email</label>
-        <input class="fi" type="email" id="se" placeholder="your@email.com">
-        <label class="fl">Password</label>
-        <input class="fi" type="password" id="sp" placeholder="Min 6 characters">
-        <button class="btn-accent" style="width:100%" onclick="doSignup()">Join HMuse</button>
+        <h2 style="margin-bottom:20px; font-family:'Syne'">Join HMuse</h2>
+        <input class="fi" type="email" id="se" placeholder="Email">
+        <input class="fi" type="password" id="sp" placeholder="Password (min 6 chars)">
+        <button class="btn-accent" style="width:100%" onclick="doSignup()">Create Account</button>
+        <p style="font-size:12px; text-align:center; margin-top:15px; color:var(--muted); cursor:pointer" onclick="cm('m-signup');om('m-login')">Already a member? Login</p>
     </div>
 </div>
 
 <div class="mov hidden" id="m-upload">
     <div class="modal">
-        <button style="position:absolute; top:15px; right:15px; background:none; border:none; color:var(--muted)" onclick="cm('m-upload')">✕</button>
-        <h2 style="margin-bottom:10px">Upload Track</h2>
-        <p style="font-size:12px; color:var(--muted); margin-bottom:20px">Files are reviewed before going live.</p>
-        
-        <label class="fl">Audio File (MP3)</label>
+        <h2 style="margin-bottom:10px; font-family:'Syne'">Upload Track</h2>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:20px">MP3 files only. Max 10MB.</p>
         <input class="fi" type="file" id="af" accept="audio/mpeg">
-        
-        <label class="fl">Track Title</label>
-        <input class="fi" type="text" id="utitle" placeholder="What's the name of this track?">
-        
-        <div id="upload-status" style="font-size:12px; color:var(--accent); margin-bottom:10px" class="hidden">Uploading...</div>
-        <button id="ubtn" class="btn-accent" style="width:100%" onclick="doUpload()">Submit for Review</button>
+        <input class="fi" type="text" id="utitle" placeholder="Track Title">
+        <div id="up-loading" class="hidden" style="color:var(--accent); font-size:12px; margin-bottom:10px; text-align:center">Processing upload...</div>
+        <button id="u-btn" class="btn-accent" style="width:100%" onclick="doUpload()">Submit Track</button>
+        <button class="btn-ghost" style="width:100%; border:none; margin-top:8px" onclick="cm('m-upload')">Cancel</button>
     </div>
 </div>
 
-<div id="toast">Message here</div>
+<div id="toast">Task successful!</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    // --- SUPABASE CONFIG ---
     const SB_URL = 'https://veuvkutbzhbwwlkoxwaz.supabase.co';
     const SB_KEY = 'sb_publishable_oKnlJ85a4RJyMdQbuknhQg_Ha6Au53F'; 
     const sb = supabase.createClient(SB_URL, SB_KEY);
@@ -110,115 +133,118 @@
 
     async function init() {
         const { data: { session } } = await sb.auth.getSession();
-        handleAuthState(session?.user || null);
+        updateUI(session?.user || null);
+        loadTracks();
     }
 
-    function handleAuthState(user) {
+    function updateUI(user) {
         CU = user;
         if (user) {
-            document.getElementById('btn-login').classList.add('hidden');
-            document.getElementById('btn-signup').classList.add('hidden');
-            document.getElementById('btn-logout').classList.remove('hidden');
-            document.getElementById('user-email').textContent = user.email;
+            document.getElementById('l-btn').classList.add('hidden');
+            document.getElementById('o-btn').classList.remove('hidden');
+            document.getElementById('u-info').textContent = user.email;
         } else {
-            document.getElementById('btn-login').classList.remove('hidden');
-            document.getElementById('btn-signup').classList.remove('hidden');
-            document.getElementById('btn-logout').classList.add('hidden');
-            document.getElementById('user-email').textContent = '';
+            document.getElementById('l-btn').classList.remove('hidden');
+            document.getElementById('o-btn').classList.add('hidden');
+            document.getElementById('u-info').textContent = '';
         }
     }
 
-    // --- AUTH ACTIONS ---
+    // AUTH
     async function doLogin() {
         const email = document.getElementById('le').value;
         const password = document.getElementById('lp').value;
         const { data, error } = await sb.auth.signInWithPassword({ email, password });
         if (error) alert(error.message);
-        else {
-            handleAuthState(data.user);
-            cm('m-login');
-            showToast("Logged in successfully!");
-        }
+        else { updateUI(data.user); cm('m-login'); st("Welcome back!"); }
     }
 
     async function doSignup() {
         const email = document.getElementById('se').value;
         const password = document.getElementById('sp').value;
-        const { data, error } = await sb.auth.signUp({ email, password });
+        const { error } = await sb.auth.signUp({ email, password });
         if (error) alert(error.message);
-        else {
-            alert("Success! Check your email to confirm your account.");
-            cm('m-signup');
-        }
+        else { alert("Check email to confirm!"); cm('m-signup'); }
     }
 
     async function doLogout() {
         await sb.auth.signOut();
-        handleAuthState(null);
-        showToast("Logged out.");
+        updateUI(null);
+        st("Logged out");
     }
 
-    // --- UPLOAD LOGIC ---
-    function checkAuthAndUpload() {
-        if (!CU) om('m-login');
-        else om('m-upload');
-    }
+    function checkUp() { CU ? om('m-upload') : om('m-login'); }
 
+    // THE FIXED UPLOAD
     async function doUpload() {
         const file = document.getElementById('af').files[0];
         const title = document.getElementById('utitle').value.trim();
-        
-        if (!file || !title) return alert("Please provide both a file and a title.");
-        if (!CU) return alert("Session expired. Please log in again.");
+        if (!file || !title) return alert("Missing file or title");
 
-        const ubtn = document.getElementById('ubtn');
-        const ustat = document.getElementById('upload-status');
-
-        ubtn.disabled = true;
-        ustat.classList.remove('hidden');
+        const btn = document.getElementById('u-btn');
+        const load = document.getElementById('up-loading');
+        btn.disabled = true;
+        load.classList.remove('hidden');
 
         try {
-            // 1. Storage Upload
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}.${fileExt}`;
-            const { error: storageError } = await sb.storage
-                .from('music')
-                .upload(fileName, file);
+            // 1. Storage
+            const path = `${Date.now()}-${file.name.replace(/\s/g,'_')}`;
+            const { error: sErr } = await sb.storage.from('music').upload(path, file);
+            if (sErr) throw sErr;
 
-            if (storageError) throw storageError;
-
-            // 2. Database Insert (The user_id is handled by the SQL default)
-            const { error: dbError } = await sb.from('tracks').insert([{
+            // 2. Database (IMPORTANT: No user_id here, let SQL handle it)
+            const { error: dErr } = await sb.from('tracks').insert([{
                 title: title,
-                audio_url: fileName,
-                status: 'pending',
-                artist: CU.email.split('@')[0]
+                audio_url: path,
+                artist: CU.email.split('@')[0],
+                status: 'pending'
             }]);
+            if (dErr) throw dErr;
 
-            if (dbError) throw dbError;
-
-            showToast("Track submitted! Refreshing...");
-            setTimeout(() => location.reload(), 2000);
-
-        } catch (err) {
-            alert("Error: " + err.message);
-            console.error(err);
+            st("Upload successful! Pending review.");
+            cm('m-upload');
+            loadTracks();
+        } catch (e) {
+            alert("Upload Error: " + e.message);
         } finally {
-            ubtn.disabled = false;
-            ustat.classList.add('hidden');
+            btn.disabled = false;
+            load.classList.add('hidden');
         }
     }
 
-    // --- UI HELPERS ---
+    // TRACK LOADING
+    async function loadTracks() {
+        const { data, error } = await sb.from('tracks').select('*').order('created_at', { ascending: false });
+        if (error) return console.error(error);
+
+        const list = document.getElementById('track-list');
+        list.innerHTML = data.map(t => `
+            <div class="track-card" onclick="play('${t.audio_url}', '${t.title}', '${t.artist}')">
+                <div class="track-art">🎵</div>
+                <div style="font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${t.title}</div>
+                <div style="font-size:12px; color:var(--muted)">${t.artist} ${t.status === 'pending' ? '⏳' : ''}</div>
+            </div>
+        `).join('');
+    }
+
+    function play(url, title, artist) {
+        const a = document.getElementById('audio-node');
+        const { data } = sb.storage.from('music').getPublicUrl(url);
+        a.src = data.publicUrl;
+        a.play();
+        document.getElementById('p-title').textContent = title;
+        document.getElementById('p-artist').textContent = artist;
+    }
+
+    // UI UTILS
     function om(id) { document.getElementById(id).classList.remove('hidden'); }
     function cm(id) { document.getElementById(id).classList.add('hidden'); }
-    function showToast(msg) {
+    function st(m) {
         const t = document.getElementById('toast');
-        t.textContent = msg;
+        t.textContent = m;
         t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 3000);
     }
 </script>
-
 </body>
 </html>
